@@ -1,0 +1,14 @@
+<template>
+	<lightning-card title="Weekly Timesheet">
+		<lightning-button variant="neutral" title="previous week Timesheet" class="slds-float_left"
+			icon-name="utility:jump_to_left" icon-position="left" onclick={previousTimesheet}></lightning-button>
+		<lightning-button variant="neutral" title="previous week Timesheet" class="slds-float_right"
+			icon-name="utility:jump_to_right" icon-position="right" onclick={nextTimesheet}></lightning-button>
+
+		<div class="slds-m-around_medium">
+			<lightning-datatable class="wrapped-header-datatable" id="myTable" key-field="Id" data={data} columns={columns}
+				hide-checkbox-column draft-values={draftValues} onsave={handleSave} onchange={handleCellChange}>
+			</lightning-datatable>
+		</div>
+	</lightning-card>
+</template>

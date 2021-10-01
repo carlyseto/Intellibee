@@ -1,0 +1,43 @@
+h1 {
+    color: rgb(0, 112, 210);
+}
+p {
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+    color: rgb(62, 62, 60);
+}
+.app {
+    background-color: #fafaf9;
+    height: 100vh;
+    overflow: scroll;
+}
+
+h2.slds-card__header-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.wrapped-header-datatable .slds-table .slds-th__action .slds-truncate{
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: unset;
+    white-space: pre-line;
+    /* word-wrap: break-word; */
+}
+
+.wrapped-header-datatable .slds-table .slds-th__action {
+    height: 5rem;
+}
+
+.wrapped-header-datatable .slds-table .slds-line-height_reset{
+    height: 3rem;
+}
+
+.slds-text-heading--small, .slds-text-heading_small{
+    font-size: 20px;
+}
+.slds-grid--align-end, .slds-grid_align-end{
+    height: 25px;
+}
