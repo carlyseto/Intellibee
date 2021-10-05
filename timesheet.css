@@ -93,7 +93,19 @@ color: white;
 .banner {
     background-color: brown;
 }
+.slds-card__body {
+    margin-top: 0 !important;
+}
 
-.arrow {
-    border-radius: 100%''
+form lightning-card article div.slds-card__body slot div.banner div div:nth-child(3) lightning-button button {
+        border-radius: 100%;
+    background: none;
+}
+
+.THIS header.slds-card__header.slds-grid{
+    padding-top:0px;
+}
+
+div.slds-card__header.slds-grid {
+    display: none;
 }
