@@ -7,7 +7,7 @@ WeekDayinput=['LeaveSun','LeaveMon','LeaveTue','LeaveWed','LeaveThu','LeaveFri',
 
 leavevalue(event)
 {
-  
+
   console.log(event.target.title)
   console.log(event.target.value)
 }
@@ -56,8 +56,8 @@ get sSaturday()
 }
 get sWeekNumber()
 {
-  
-  return `Week start : ${this.startweek}`
+
+  return `Week Start : ${this.startweek}`
 }
 startweek
 //@track
@@ -77,12 +77,12 @@ projects=0
 nWeekNumber= this.weekNumber()
 previousTimesheet()
 {
-  
+
   this.page-=1
   this.nWeekNumber-=1
   if(this.page > 0)
   {
-   
+
     this.d -=7
     this.day=0
   }
@@ -130,7 +130,7 @@ nextTimesheet()
          this.d +=7
         }
         this.isPreviousNexttoggle = true
-    
+
         }
         else if(this.page === 0)
         { 
@@ -186,5 +186,5 @@ nextTimesheet()
       this.numberofprojects.push(`project${this.projects}`)
       console.log(numberofprojects[1])
     }
-    
-}
+
+} 

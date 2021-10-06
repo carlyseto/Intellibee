@@ -100,6 +100,13 @@ color: white;
 form lightning-card article div.slds-card__body slot div.banner div div:nth-child(3) lightning-button button {
         border-radius: 100%;
     background: none;
+    color: white;
+}
+
+form lightning-card article div.slds-card__body slot div.banner div div:nth-child(1) lightning-button button {
+            border-radius: 100%;
+    background: none;
+    color: white;
 }
 
 .THIS header.slds-card__header.slds-grid{
@@ -109,3 +116,4 @@ form lightning-card article div.slds-card__body slot div.banner div div:nth-chil
 div.slds-card__header.slds-grid {
     display: none;
 }
+
