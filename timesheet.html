@@ -1,13 +1,14 @@
-<!-- sldsValidatorIgnore -->
-
 <template>
 	<form>
 		<lightning-card icon-name="custom:custom14 slds-box">
 			<div class="banner">
 				<div class="row">
 					<div class="column">
-						<lightning-button variant="neutral" title="previous week Timesheet" class="slds-float_left arrow"
-							icon-name="utility:jump_to_left" icon-position="left" onclick={previousTimesheet}></lightning-button>
+						<div class="weekButton">
+							<lightning-button variant="neutral" title="previous week Timesheet" class="slds-float_left arrow"
+								style="border-radius:100%;background:none;" icon-name="utility:jump_to_left" icon-position="left"
+								onclick={previousTimesheet}></lightning-button>
+						</div>
 					</div>
 					<div class="column">
 						<h2>{sWeekNumber}</h2>
@@ -134,15 +135,18 @@
 					</tbody>
 				</table>
 			</div>
-			<lightning-button variant="neutral" title="Add new project" class="slds-float_left" icon-name="utility:add"
-				icon-position="left" onclick={addfunction}></lightning-button>
-		</lightning-card>
-		<div style="display:flex;justify-content:center;">
-			<lightning-button variant="neutral" title="redo" class="slds-float_right" icon-name="utility:undo"
-				icon-position="right" onclick={previousTimesheet} label="Cancel"></lightning-button>
-			<lightning-button variant="neutral" title="Submit" class="slds-float_right" icon-name="utility:send"
-				icon-position="left" onclick={previousTimesheet} label="Submit"></lightning-button>
+			<div>
+				<lightning-button variant="neutral" title="Add new project" class="slds-float_left" icon-name="utility:add"
+					icon-position="left" onclick={addfunction}></lightning-button>
+			</div>
+			<div style="display:flex;justify-content:center;">
+				<lightning-button variant="neutral" title="redo" class="slds-float_right" icon-name="utility:undo"
+					icon-position="right" onclick={previousTimesheet} label="Cancel"></lightning-button>
+				<lightning-button variant="neutral" title="Submit" class="slds-float_right" icon-name="utility:send"
+					icon-position="left" onclick={previousTimesheet} label="Submit"></lightning-button>
 
-		</div>
+			</div>
+		</lightning-card>
+
 	</form>
 </template>
