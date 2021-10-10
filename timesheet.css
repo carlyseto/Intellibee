@@ -117,3 +117,17 @@ div.slds-card__header.slds-grid {
     display: none;
 }
 
+.slds-button__icon--left, .slds-button__icon_left {
+    margin: 0;
+}
+
+
+form lightning-card article div.slds-card__body slot div.slds-var-m-around_medium table tbody tr.slds-hint-parent th div div div lightning-button button {
+    width: 0;
+    background: none;
+    border: none;
+}
+
+form lightning-card article div.slds-card__body slot div.slds-var-m-around_medium table tbody tr.slds-hint-parent th {
+    padding: 0;
+}

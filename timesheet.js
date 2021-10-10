@@ -1,6 +1,28 @@
 import ReminderDateTime from '@salesforce/schema/Task.ReminderDateTime';
 import { LightningElement,track } from 'lwc';
 //import intellibeeTimesheet from './intellibee_Timesheet.html'
+
+
+var curr = new Date; // get current date
+var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
+var last = first + 6; // last day is the first day + 6
+
+//var firstDay = first.getDay();
+
+console.log(curr);
+console.log(first);
+console.log(last);
+//console.log(firstDay);
+
+       function reSum()
+        {
+            var num1 = parseInt(document.getElementById("one").value);
+            var num2 = parseInt(document.getElementById("two").value);
+            document.getElementById(".avvy2").value = num1 + num2;
+
+        }
+
+
 export default class Intellibee_Timesheet extends LightningElement {
 
 WeekDayinput=['LeaveSun','LeaveMon','LeaveTue','LeaveWed','LeaveThu','LeaveFri','LeaveSat','Total','Remarks']
@@ -187,4 +209,10 @@ nextTimesheet()
       console.log(numberofprojects[1])
     }
 
+       reSum(event)
+        {
+var x = parseInt(this.template.querySelector("lightning-input[data-id=in1]").value);
+var y = parseInt(this.template.querySelector("lightning-input[data-id=in2]").value);
+this.template.querySelector("lightning-input[data-id=in3]").value = x+y;
+        }
 } 

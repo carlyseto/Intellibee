@@ -68,7 +68,7 @@
 							</th>
 							<template for:each={WeekDayinput} for:item="w_item">
 								<td key={w_item} data-label="Fri">
-									<input type="text" title={w_item}  onkeyup={Holidayvalue} class="slds-input" />
+									<input type="number" title={w_item}  onkeyup={Holidayvalue} class="slds-input" />
 								</td>
 							</template>
 						</tr>
@@ -80,7 +80,7 @@
 							</th>
 							<template for:each={WeekDayinput} for:item="w_item">
 								<td key={w_item} data-label="Fri">
-									<input type="text" title={w_item}  onkeyup={Trainingvalue} class="slds-input" />
+									<input type="number" title={w_item}  onkeyup={Trainingvalue} class="slds-input" />
 								</td>
 							</template>
 						</tr>
@@ -103,23 +103,31 @@
 										<!--label class="slds-form-element__label" for="select-01">Select Label</label-->
 										<div class="slds-form-element__control">
 											<div class="slds-select_container">
+
+
+												<lightning-button variant="neutral" title="Add new project" class="slds-float_left"
+													icon-name="utility:add" icon-position="left" onclick={addfunction}></lightning-button>
+
 												<select class="slds-select">
                             <option value="">Project</option>
                             <option>Option One</option>
                             <option>Option Two</option>
                             <option>Option Three</option>
                           </select>
+
+
 											</div>
 										</div>
 									</div>
 								</th>
 								<template for:each={WeekDayinput} for:item="w_item">
 									<td key={w_item} data-label="Fri">
-										<input type="text" title={w_item}  onkeyup={Projectvalue} class="slds-input" />
+										<input type="number" title={w_item}  onkeyup={Projectvalue} class="slds-input" />
 									</td>
 								</template>
 							</tr>
 						</template>
+
 						<tr>
 							<th data-label="Total" scope="coloumn">
 								<div class="slds-truncate" title="Standard Tasks">
@@ -132,18 +140,38 @@
 								</td>
 							</template>
 						</tr>
+
+
+						<tr>
+							<th>test</th>
+							<td>
+								<lightning-input label="t" type="number" class="slds-input" data-id="in1" onchange={reSum}>
+								</lightning-input>
+							</td>
+							<td>
+								<lightning-input label="t" type="number" class="slds-input" data-id="in2" onchange={reSum}>
+								</lightning-input>
+							</td>
+							<td><input type="number" class="slds-input"/></td>
+							<td><input type="number" class="slds-input"/></td>
+							<td><input type="number" class="slds-input"/></td>
+							<td><input type="number" class="slds-input"/></td>
+							<td><input type="number" class="slds-input"/></td>
+							<td><input type="text" class="slds-input avvy" id="avvy" onkeyup={reSum} ></td>
+							<td>
+								<lightning-input data-id="in3" class="second-class" label="test" onkeyup={reSum}></lightning-input>
+							</td>
+
+						</tr>
+
 					</tbody>
 				</table>
-			</div>
-			<div>
-				<lightning-button variant="neutral" title="Add new project" class="slds-float_left" icon-name="utility:add"
-					icon-position="left" onclick={addfunction}></lightning-button>
 			</div>
 			<div style="display:flex;justify-content:center;">
 				<lightning-button variant="neutral" title="redo" class="slds-float_right" icon-name="utility:undo"
 					icon-position="right" onclick={previousTimesheet} label="Cancel"></lightning-button>
 				<lightning-button variant="neutral" title="Submit" class="slds-float_right" icon-name="utility:send"
-					icon-position="left" onclick={previousTimesheet} label="Submit"></lightning-button>
+					icon-position="left" onclick={previousTimesheet} label="&nbsp;Submit"></lightning-button>
 
 			</div>
 		</lightning-card>
