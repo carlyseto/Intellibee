@@ -84,6 +84,7 @@
 								</td>
 							</template>
 						</tr>
+
 						<tr>
 							<th data-label="Task" scope="coloumn">
 								<div class="slds-truncate" title="Standard Tasks">
@@ -91,11 +92,13 @@
 								</div>
 							</th>
 							<template for:each={WeekDayinput} for:item="w_item">
-								<td key={w_item} data-label="Fri">
-									<input type="text" title={w_item}  onkeyup={leavevalue} class="slds-input" />
+								<td key={w_item.id} data-key={w_item.id}>
+									<input type="text" title={w_item} label="test" onkeyup={leavevalue} class="slds-input" value={w_item.value}
+										/>
 								</td>
 							</template>
 						</tr>
+
 						<template for:each={numberofprojects} for:item="project_item">
 							<tr key={project_item} class="slds-hint-parent">
 								<th data-label="Task" scope="row">
@@ -140,16 +143,15 @@
 								</td>
 							</template>
 						</tr>
-
-
+						<!--
 						<tr>
 							<th>test</th>
 							<td>
-								<lightning-input label="t" type="number" class="slds-input" data-id="in1" onchange={reSum}>
+								<lightning-input label="t" type="number" class="label-hidden" data-id="in1" onchange={reSum}>
 								</lightning-input>
 							</td>
 							<td>
-								<lightning-input label="t" type="number" class="slds-input" data-id="in2" onchange={reSum}>
+								<lightning-input label="t" type="number" class="label-hidden" data-id="in2" onchange={reSum}>
 								</lightning-input>
 							</td>
 							<td><input type="number" class="slds-input"/></td>
@@ -157,11 +159,43 @@
 							<td><input type="number" class="slds-input"/></td>
 							<td><input type="number" class="slds-input"/></td>
 							<td><input type="number" class="slds-input"/></td>
+							<td>
+								<lightning-input data-id="in3" class="second-class label-hidden" label="test" onkeyup={reSum}>
+								</lightning-input>
+							</td>
 							<td><input type="text" class="slds-input avvy" id="avvy" onkeyup={reSum} ></td>
-							<td>
-								<lightning-input data-id="in3" class="second-class" label="test" onkeyup={reSum}></lightning-input>
-							</td>
 
+						</tr>
+-->
+
+						<tr>
+							<th data-label="Task" scope="coloumn">
+								<div class="slds-truncate" title="Standard Tasks">
+									Leave
+								</div>
+							</th>
+
+							<template for:each={rows} for:item="item">
+								<td key={item.id}>
+									<lightning-input type="text" data-id={item.id} label="test" onchange={loopReSum}
+										class="slds-input label-hidden"></lightning-input>
+								</td>
+							</template>
+
+						</tr>
+
+						<tr data-label="Total">
+							<th data-label="Total" scope="coloumn">
+								<div class="slds-truncate" title="Standard Tasks">
+									Total
+								</div>
+							</th>
+							<template for:each={rows} for:item="item">
+								<td key={item.id}>
+									<lightning-input type="text" class="slds-input label-hidden" data-id={item.id} data-label="Total"
+										label="test" onchange={test}></lightning-input>
+								</td>
+							</template>
 						</tr>
 
 					</tbody>

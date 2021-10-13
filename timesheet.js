@@ -14,14 +14,6 @@ console.log(first);
 console.log(last);
 //console.log(firstDay);
 
-       function reSum()
-        {
-            var num1 = parseInt(document.getElementById("one").value);
-            var num2 = parseInt(document.getElementById("two").value);
-            document.getElementById(".avvy2").value = num1 + num2;
-
-        }
-
 
 export default class Intellibee_Timesheet extends LightningElement {
 
@@ -200,6 +192,16 @@ nextTimesheet()
     connectedCallback()   
     {
       this.datedisplay()
+      var in0 = 'in0';
+      var in1 = 'in1';
+      var in2 = 'in2';
+      var in3 = 'in3';
+      var in4 = 'in4';
+      var in5 = 'in5';
+      var in6 = 'in6';
+      var in7 = 'in7'
+      var in8 = 'in8';
+      this.rows = [{id:in0,value:''},{id:in1,value:''},{id:in2,value:''},{id:in3,value:''},{id:in4,value:''},{id:in5,value:''},{id:in6,value:''},{id:in7,value:''},{id:in8,value:''}];
     }
 
     addfunction()
@@ -209,10 +211,50 @@ nextTimesheet()
       console.log(numberofprojects[1])
     }
 
+idNumber(){
+  this.template.querySelector("lightning-input[data-id]").value = '10';
+}
+
        reSum(event)
         {
-var x = parseInt(this.template.querySelector("lightning-input[data-id=in1]").value);
-var y = parseInt(this.template.querySelector("lightning-input[data-id=in2]").value);
-this.template.querySelector("lightning-input[data-id=in3]").value = x+y;
+        var x = parseInt(this.template.querySelector("lightning-input[data-id=in1]").value);
+        var y = parseInt(this.template.querySelector("lightning-input[data-id=in2]").value);
+        this.template.querySelector("lightning-input[data-id=in3]").value = x+y;
+        }
+
+        loopReSum(event){
+          //ar x = parseInt(this.template.querySelector("lightning-input[data-id=in1]").value);
+          var a = parseInt(this.template.querySelector("lightning-input[data-id=in0]").value);
+          var b = parseInt(this.template.querySelector("lightning-input[data-id=in1]").value);
+          var c = parseInt(this.template.querySelector("lightning-input[data-id=in2]").value);
+          var d = parseInt(this.template.querySelector("lightning-input[data-id=in3]").value);
+          var e = parseInt(this.template.querySelector("lightning-input[data-id=in4]").value);
+          var f = parseInt(this.template.querySelector("lightning-input[data-id=in5]").value);
+          var g = parseInt(this.template.querySelector("lightning-input[data-id=in6]").value);
+          var h = parseInt(this.template.querySelector("lightning-input[data-id=in7]").value);
+          this.template.querySelector("lightning-input[data-id=in8]").value = a+b;
+        }
+
+        test(event){
+          //var a = this.template.querySelector(".Total .total1").value;
+          //var x = event.target.getAttribute('data-label');
+          //console.log(event.target.getAttribute('data-label'));
+          //var className2 = event.target.className;
+          
+          var findClassName = new RegExp("addTotal[0-9]");
+          console.log(findClassName);
+          //var findMatch = findClassName.exec(className2);
+          var className2 = event.target.closest("tr").querySelector("td lightning-input[data-id=in1]").value;
+          //var selectClass = className2.querySelector("."+findClassName);
+          //var findMatch = findClassName.exec(className2);
+          //console.log(findMatch[0]);
+          console.log(className2);
+          //console.log(selectClass);
+          
+          //var a = parseInt(this.template.querySelector(".addTotal2 lightning-input[data-id=in1]").value);
+          //console.log(a);
+          //var b = this.template.querySelector("lightning-input[data-id=in1]").value;
+          //console.log(b);
+
         }
 } 

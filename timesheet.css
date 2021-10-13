@@ -31,6 +31,10 @@ h2.slds-card__header-title {
 
 }
 
+.label-hidden > label {
+    display: none;
+}
+
 .slds-table thead tr{
         background-color: #009879;
     color: #ffffff;
