@@ -211,30 +211,6 @@ nextTimesheet()
       console.log(numberofprojects[1])
     }
 
-idNumber(){
-  this.template.querySelector("lightning-input[data-id]").value = '10';
-}
-
-       reSum(event)
-        {
-        var x = parseInt(this.template.querySelector("lightning-input[data-id=in1]").value);
-        var y = parseInt(this.template.querySelector("lightning-input[data-id=in2]").value);
-        this.template.querySelector("lightning-input[data-id=in3]").value = x+y;
-        }
-
-        loopReSum(event){
-          //ar x = parseInt(this.template.querySelector("lightning-input[data-id=in1]").value);
-          var a = parseInt(this.template.querySelector("lightning-input[data-id=in0]").value);
-          var b = parseInt(this.template.querySelector("lightning-input[data-id=in1]").value);
-          var c = parseInt(this.template.querySelector("lightning-input[data-id=in2]").value);
-          var d = parseInt(this.template.querySelector("lightning-input[data-id=in3]").value);
-          var e = parseInt(this.template.querySelector("lightning-input[data-id=in4]").value);
-          var f = parseInt(this.template.querySelector("lightning-input[data-id=in5]").value);
-          var g = parseInt(this.template.querySelector("lightning-input[data-id=in6]").value);
-          var h = parseInt(this.template.querySelector("lightning-input[data-id=in7]").value);
-          this.template.querySelector("lightning-input[data-id=in8]").value = a+b;
-        }
-
         test(event){
           //var a = this.template.querySelector(".Total .total1").value;
           //var x = event.target.getAttribute('data-label');
@@ -256,5 +232,15 @@ idNumber(){
           //var b = this.template.querySelector("lightning-input[data-id=in1]").value;
           //console.log(b);
 
+        }
+
+        hourTotal(event){
+          	var listHours = 0;
+	          for(var x = 0; x <= 6; x++){
+		          var inputValue = parseInt(event.target.closest("tr").querySelector("td lightning-input[data-id=in"+x+"]").value);
+		          listHours += inputValue;
+	          }
+	          event.target.closest("tr").querySelector("td lightning-input[data-id=in7]").value = listHours;
+            console.log(listHours);
         }
 } 
