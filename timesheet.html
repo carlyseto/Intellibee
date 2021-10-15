@@ -119,8 +119,6 @@
                             <option>Option Two</option>
                             <option>Option Three</option>
                           </select>
-
-
 											</div>
 										</div>
 									</div>
@@ -128,56 +126,11 @@
 								<template for:each={rows} for:item="item">
 									<td key={item.id} data-label="Fri">
 										<lightning-input type="text" class="slds-input label-hidden" data-id={item.id} data-label="Total"
-											label="test"></lightning-input>
+											label="test" onchange={hourTotal}></lightning-input>
 									</td>
 								</template>
 							</tr>
 						</template>
-
-						<tr>
-							<th data-label="Total" scope="coloumn">
-								<div class="slds-truncate" title="Standard Tasks">
-									Total
-								</div>
-							</th>
-
-							<template for:each={rows} for:item="item">
-								<td key={item.id} data-label="Fri">
-									<lightning-input type="text" data-id={item.id} label="test" onchange={hourTotal}
-										class="slds-input label-hidden"></lightning-input>
-								</td>
-							</template>
-						</tr>
-
-						<tr>
-							<th data-label="Task" scope="coloumn">
-								<div class="slds-truncate" title="Standard Tasks">
-									Leave
-								</div>
-							</th>
-
-							<template for:each={rows} for:item="item">
-								<td key={item.id}>
-									<lightning-input type="text" data-id={item.id} label="test" onchange={hourTotal}
-										class="slds-input label-hidden"></lightning-input>
-								</td>
-							</template>
-
-						</tr>
-
-						<tr data-label="Total">
-							<th data-label="Total" scope="coloumn">
-								<div class="slds-truncate" title="Standard Tasks">
-									Test
-								</div>
-							</th>
-							<template for:each={rows} for:item="item">
-								<td key={item.id}>
-									<lightning-input type="text" class="slds-input label-hidden" data-id={item.id} data-label="Total"
-										label="test" onchange={hourTotal}></lightning-input>
-								</td>
-							</template>
-						</tr>
 
 						<tr data-label="Total" class="addAll">
 							<th data-label="Total" scope="coloumn">

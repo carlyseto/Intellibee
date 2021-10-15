@@ -69,7 +69,7 @@ get sWeekNumber()
   return `Week Start : ${this.startweek}`
 }
 startweek
-//@track
+@track
 numberofprojects=['project0']
 
 
@@ -228,7 +228,7 @@ nextTimesheet()
           //console.log(b);
 
         }
-
+/*
         hourTotal(event){
           	var listHours = 0;
             var totalListHours = 0;
@@ -238,9 +238,9 @@ nextTimesheet()
 	          }
 	          event.target.closest("tr").querySelector("td lightning-input[data-id=in7]").value = listHours;
             var x = this.template.querySelectorAll("lightning-input[data-id=in7]");
-            this.template.querySelector(".addAll lightning-input[data-id=in7]").value = parseInt(x[0].value) + parseInt(x[1].value);
+            this.template.querySelector(".addAll lightning-input[data-id=in7]").value = parseInt(x[3].value);
         }
-        
+        */
         /*
         hourTotal(event){
           	var listHours = 0;
@@ -250,5 +250,18 @@ nextTimesheet()
 	          }
 	          event.target.closest("tr").querySelector("td input[data-id=in7]").value = listHours;
         }
-        */
+*/
+        hourTotal(event){
+          	var listHours = 0;
+            var totalListHours = 0;
+	          for(var x = 0; x <= 6; x++){
+              listHours += (isNaN(event.target.closest("tr").querySelector("td lightning-input[data-id=in"+x+"]").value) || event.target.closest("tr").querySelector("td lightning-input[data-id=in"+x+"]").value == "") ? 0 : parseInt(event.target.closest("tr").querySelector("td lightning-input[data-id=in"+x+"]").value);
+		          //var inputValue = parseInt(event.target.closest("tr").querySelector("td lightning-input[data-id=in"+x+"]").value);
+		          //listHours += inputValue;
+	          }
+	          event.target.closest("tr").querySelector("td lightning-input[data-id=in7]").value = listHours;
+            var x = this.template.querySelectorAll("lightning-input[data-id=in7]");
+            this.template.querySelector(".addAll lightning-input[data-id=in7]").value = parseInt(x[3].value);
+        }
+        
 } 
