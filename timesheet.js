@@ -19,12 +19,7 @@ export default class Intellibee_Timesheet extends LightningElement {
 
 WeekDayinput=['LeaveSun','LeaveMon','LeaveTue','LeaveWed','LeaveThu','LeaveFri','LeaveSat','Total','Remarks']
 
-leavevalue(event)
-{
 
-  console.log(event.target.title)
-  console.log(event.target.value)
-}
 Trainingvalue(event)
 {
   console.log('sam')
@@ -236,11 +231,24 @@ nextTimesheet()
 
         hourTotal(event){
           	var listHours = 0;
+            var totalListHours = 0;
 	          for(var x = 0; x <= 6; x++){
 		          var inputValue = parseInt(event.target.closest("tr").querySelector("td lightning-input[data-id=in"+x+"]").value);
 		          listHours += inputValue;
 	          }
 	          event.target.closest("tr").querySelector("td lightning-input[data-id=in7]").value = listHours;
-            console.log(listHours);
+            var x = this.template.querySelectorAll("lightning-input[data-id=in7]");
+            this.template.querySelector(".addAll lightning-input[data-id=in7]").value = parseInt(x[0].value) + parseInt(x[1].value);
         }
+        
+        /*
+        hourTotal(event){
+          	var listHours = 0;
+	          for(var x = 0; x <= 6; x++){
+		          var inputValue = parseInt(event.target.closest("tr").querySelector("td input[data-id=in"+x+"]").value);
+		          listHours += inputValue;
+	          }
+	          event.target.closest("tr").querySelector("td input[data-id=in7]").value = listHours;
+        }
+        */
 } 

@@ -135,3 +135,15 @@ form lightning-card article div.slds-card__body slot div.slds-var-m-around_mediu
 form lightning-card article div.slds-card__body slot div.slds-var-m-around_medium table tbody tr.slds-hint-parent th {
     padding: 0;
 }
+
+tr.addAll lightning-input{
+    visibility: hidden;
+}
+
+tr.addAll > td:nth-child(9) > lightning-input {
+    visibility: visible;
+}
+.slds-input{
+    padding: 0;
+}
+
