@@ -103,16 +103,17 @@
 						</tr>
 
 						<template for:each={numberofprojects} for:item="project_item">
-							<tr key={project_item} class="slds-hint-parent">
+							<tr key={project_item} class="slds-hint-parent" >
 								<th data-label="Task" scope="row">
 									<div class="slds-form-element">
 										<!--label class="slds-form-element__label" for="select-01">Select Label</label-->
+									
 										<div class="slds-form-element__control">
 											<div class="slds-select_container">
 
 
 												<lightning-button variant="base" title="Add new project" class="slds-float_left"
-													icon-name="utility:add" icon-position="left" onclick={addfunction}></lightning-button>
+													icon-name="utility:add" icon-position="left"></lightning-button>
 
 												<select class="slds-select">
                             <option value="">Project</option>
@@ -132,7 +133,7 @@
 								</template>
 							</tr>
 						</template>
-
+					
 						<tr data-label="Total" class="addAll">
 							<th data-label="Total" scope="coloumn">
 								<div class="slds-truncate" title="Standard Tasks">

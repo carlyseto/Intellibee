@@ -16,6 +16,40 @@ console.log(last);
 
 export default class Intellibee_Timesheet extends LightningElement {
 
+
+  Projectvalue(event)
+  {
+    
+    var project={}
+    this.projectTitle = event.target.name
+    project[event.target.name]=this.weekvalue
+    project[event.target.name][event.target.title]= event.target.value
+    this.projectData.push(project)
+   
+   this.calculatetotal()
+  }
+  calculatetotal()
+  {
+    console.log('sam')
+   console.log(this.projectData[0])
+    for(let i in projectData)
+     {
+      console.log(i)
+     }
+  }
+  projectvalueoption(event)
+  {
+    this.projectname= event.target.value
+  }
+  leavevalue(event) {
+    if (event.target.title === 'Sun' || event.target.title === 'Sat') {
+      event.target.disabled = true
+      event.target.value = ''
+     
+    }
+  }
+
+
 WeekDayinput=['LeaveSun','LeaveMon','LeaveTue','LeaveWed','LeaveThu','LeaveFri','LeaveSat','Total','Remarks']
 
 
@@ -278,5 +312,17 @@ nextTimesheet()
             var x = this.template.querySelectorAll("lightning-input[data-id=in7]");
             this.template.querySelector(".addAll lightning-input[data-id=in7]").value = parseInt(x[3].value);
         }
-        
+
+
+        modalcancel(event)
+        {
+          this.showModal= false
+        }
+      
+        modalSave(event)
+        {
+          this.projects += 1
+          this.numberofprojects.push(this.projectname)
+          this.showModal= false
+        }
 } 
