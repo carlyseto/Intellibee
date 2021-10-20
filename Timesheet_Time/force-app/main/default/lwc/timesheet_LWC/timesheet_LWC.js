@@ -1,6 +1,13 @@
-import { LightningElement, track } from 'lwc';
+import { LightningElement, track, wire} from 'lwc';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import SAMPLE_CSS from '@salesforce/resourceUrl/Timesheet_CSS';
+import id from '@salesforce/user/Id'
+import NAME_FIELD from '@salesforce/schema/User.Name'
+import EMAIL_FIELD from '@salesforce/schema/User.Email'
+const fields = [NAME_FIELD, EMAIL_FIELD]
+import {getRecord} from 'lightning/uiRecordApi'
+import timesheetRecord from "@salesforce/apex/TimesheetLWC.createRecord";
+import weekStart from '@salesforce/schema/Weekly_Timesheet__c.Week_Start_Date__c';
 
 var curr = new Date; // get current date
 var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
@@ -12,13 +19,28 @@ console.log(curr);
 console.log(first);
 console.log(last);
 //console.log(firstDay);
-
+//submitWeek = weekStart;
 
 export default class Intellibee_Timesheet extends LightningElement {
 showModal = false
 projectData=[]
 projectlist=['ECIC','PAF','TIMESHEET']
 projectname= this.projectlist[0]
+
+userid =id
+userName
+total=0
+@wire(getRecord,{recordId:'$userid',fields})
+userdetail(response)
+{
+  if(response.data)
+  {
+   this.userName= response.data.fields.Name.value
+  }
+
+}
+
+example = "Welcome "+ this.userName + "\n" + this.sWeekNumber
 
 Projectvalue(event)
 {
@@ -120,6 +142,9 @@ isPreviousNexttoggle =false
 page =0
 projects=0
 nWeekNumber= this.weekNumber()
+
+
+
 previousTimesheet()
 {
 
@@ -204,12 +229,22 @@ nextTimesheet()
   {
       this.Days = new Array();
       this.startweek = new Date(this.y,this.m,this.d-(this.day)).toDateString();
+      this.startweek2 = new Date(this.y,this.m,this.d-(this.day));
+      //console.log(this.startweek2);
+      //console.log(this.startweek2.getFullYear(), this.startweek2.getMonth()+1, this.startweek2.getDate());
+      var today = new Date().getFullYear()+'-'+("0"+(new Date().getMonth()+1)).slice(-2)+'-'+("0"+new Date().getDate()).slice(-2);
+      //console.log(today);
+      var convertMonthNumber = this.startweek2.getMonth()+1;
+      console.log(convertMonthNumber);
+      var submitWeekStart = this.startweek2.getFullYear()+"-"+convertMonthNumber+"-"+this.startweek2.getDate();
+      console.log(submitWeekStart);
       for(var i=-(this.day);i<=(6-this.day);i++)
       {
       var val=new Date(this.y,this.m,this.d+i).toDateString();
 
-        this.Days.push(val.slice(0,10))
+        this.Days.push(val.slice(0,10));
       }
+
   }
   weekNumber()
   {
@@ -245,6 +280,14 @@ nextTimesheet()
   this.showModal= true
   
 }
+/*
+newRecord = {
+  submitWeek : 2021-11-21
+}*/
+/*
+createTimesheetRecord(event){
+  timesheetRecord({rec: this.newRecord});
+}*/
 
   modalcancel(event)
 {

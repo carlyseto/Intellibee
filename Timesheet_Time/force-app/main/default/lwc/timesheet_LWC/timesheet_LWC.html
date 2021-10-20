@@ -4,6 +4,11 @@
 		
 			<div class="banner">
 				<div class="row">
+					<div class="column"></div>
+					<div class="column"><h2>Welcome {userName}!</h2></div>
+					<div class="column"></div>
+				</div>
+				<div class="row">
 					<div class="column">
 						<div class="weekButton">
 							<lightning-button variant="label-hidden" title="previous week Timesheet" class="slds-float_left arrow"
@@ -113,7 +118,7 @@
 
 
 												<lightning-button variant="base" title="Add new project" class="slds-float_left"
-													icon-name="utility:add" icon-position="left"></lightning-button>
+													icon-name="utility:add" icon-position="left" onclick={addfunction}></lightning-button>
 
 												<select class="slds-select">
                             <option value="">Project</option>
@@ -133,7 +138,7 @@
 								</template>
 							</tr>
 						</template>
-					
+				
 						<tr data-label="Total" class="addAll">
 							<th data-label="Total" scope="coloumn">
 								<div class="slds-truncate" title="Standard Tasks">
@@ -193,4 +198,5 @@
 			<div class="slds-backdrop slds-backdrop_open"></div>
 		</template>
 	</div>
+
 </template>
