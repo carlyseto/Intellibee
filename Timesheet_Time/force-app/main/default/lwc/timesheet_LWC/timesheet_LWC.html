@@ -4,11 +4,6 @@
 		
 			<div class="banner">
 				<div class="row">
-					<div class="column"></div>
-					<div class="column"><h2>Welcome {userName}!</h2></div>
-					<div class="column"></div>
-				</div>
-				<div class="row">
 					<div class="column">
 						<div class="weekButton">
 							<lightning-button variant="label-hidden" title="previous week Timesheet" class="slds-float_left arrow"
@@ -17,6 +12,7 @@
 						</div>
 					</div>
 					<div class="column">
+						<h2>Welcome {userName}!</h2>
 						<h2>{sWeekNumber}</h2>
 					</div>
 					<div class="column">
@@ -138,6 +134,34 @@
 								</template>
 							</tr>
 						</template>
+
+
+
+
+
+<!--
+						<tr>
+							<th data-label="Task" scope="coloumn">
+								<div class="slds-truncate" title="Standard Tasks">
+									<lightning-combobox name="Project" label="Project" value={value}
+			
+									options={projectPicklist.data.values} onchange={projectChange}>
+				
+								</lightning-combobox>
+								</div>
+							</th>
+							<template for:each={rows} for:item="item">
+								<td key={item.id} data-label="Fri">
+									<lightning-input type="text" data-id={item.id} label="" variant="label-hidden" onchange={hourTotal}
+										class="slds-input label-hidden"></lightning-input>
+								</td>
+							</template>
+						</tr>
+					-->
+		
+
+					
+
 				
 						<tr data-label="Total" class="addAll">
 							<th data-label="Total" scope="coloumn">
@@ -169,6 +193,13 @@
 					  </button>
 			</div>
 		</lightning-card>
+		
+		<template if:true={projectPicklist.data}>
+            <lightning-combobox name="progress" label="Lead Source" value={value}
+                options={projectPicklist.data.values} onchange={projectChange}>
+            </lightning-combobox>
+        </template>
+
 
 	</form>
 		<div>
