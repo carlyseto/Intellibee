@@ -6,8 +6,9 @@ import NAME_FIELD from '@salesforce/schema/User.Name'
 import EMAIL_FIELD from '@salesforce/schema/User.Email'
 const fields = [NAME_FIELD, EMAIL_FIELD]
 import {getRecord} from 'lightning/uiRecordApi'
-import timesheetRecord from "@salesforce/apex/TimesheetLWC.createRecord";
-import weekStart from '@salesforce/schema/Weekly_Timesheet__c.Week_Start_Date__c';
+//import timesheetRecord from "@salesforce/apex/TimesheetLWC.createRecord";
+//import weekStart from '@salesforce/schema/Weekly_Timesheet__c.Week_Start_Date__c';
+import { createRecord } from 'lightning/uiRecordApi';
 
 var curr = new Date; // get current date
 var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
@@ -19,7 +20,7 @@ console.log(curr);
 console.log(first);
 console.log(last);
 //console.log(firstDay);
-//submitWeek = weekStart;
+//submitWeek;
 
 export default class Intellibee_Timesheet extends LightningElement {
 showModal = false
@@ -29,6 +30,7 @@ projectname= this.projectlist[0]
 
 userid =id
 userName
+submitWeekStart
 total=0
 @wire(getRecord,{recordId:'$userid',fields})
 userdetail(response)
@@ -129,6 +131,7 @@ return `Week Start : ${this.startweek}`
 startweek
 @track
 numberofprojects=['project0']
+
 
 
 Days = new Array();
@@ -236,8 +239,9 @@ nextTimesheet()
       //console.log(today);
       var convertMonthNumber = this.startweek2.getMonth()+1;
       console.log(convertMonthNumber);
-      var submitWeekStart = this.startweek2.getFullYear()+"-"+convertMonthNumber+"-"+this.startweek2.getDate();
-      console.log(submitWeekStart);
+      this.submitWeekStart = this.startweek2.getFullYear()+"-"+convertMonthNumber+"-"+this.startweek2.getDate();
+      console.log("submitWeekStart "+this.submitWeekStart);
+      
       for(var i=-(this.day);i<=(6-this.day);i++)
       {
       var val=new Date(this.y,this.m,this.d+i).toDateString();
@@ -246,6 +250,7 @@ nextTimesheet()
       }
 
   }
+
   weekNumber()
   {
     var onejan = new Date(this.y,0,1);
@@ -280,14 +285,6 @@ nextTimesheet()
   this.showModal= true
   
 }
-/*
-newRecord = {
-  submitWeek : 2021-11-21
-}*/
-/*
-createTimesheetRecord(event){
-  timesheetRecord({rec: this.newRecord});
-}*/
 
   modalcancel(event)
 {
@@ -378,4 +375,24 @@ modalSave(event)
         this.numberofprojects.push(this.projectname)
         this.showModal= false
       }
+/*
+      newRecord = {
+        submitWeek : 2021-11-21
+      }
+  
+      createTimesheetRecord(event){
+        timesheetRecord({rec: newRecord});
+      }
+  */    
+ 
+      createTimesheetRecord(){
+        var fields = {'Week_Start_Date__c' : this.submitWeekStart};
+        var objRecordInput = {'apiName' : 'Weekly_Timesheet__c', fields};
+        createRecord(objRecordInput).then(response => {
+          alert('Record created with Id: ' +response.id);
+      }).catch(error => {
+          alert('Error: ' +JSON.stringify(error));
+      });
+      }
+      
 } 
