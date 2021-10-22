@@ -9,6 +9,10 @@ import {getRecord} from 'lightning/uiRecordApi'
 //import timesheetRecord from "@salesforce/apex/TimesheetLWC.createRecord";
 //import weekStart from '@salesforce/schema/Weekly_Timesheet__c.Week_Start_Date__c';
 import { createRecord } from 'lightning/uiRecordApi';
+import { getPicklistValues } from 'lightning/uiObjectInfoApi';
+import { getObjectInfo } from 'lightning/uiObjectInfoApi';
+import TIMESHEET_OBJ from '@salesforce/schema/Weekly_Timesheet__c';
+import PROJECT from '@salesforce/schema/Weekly_Timesheet__c.Test_Project__c';
 
 var curr = new Date; // get current date
 var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
@@ -39,6 +43,25 @@ userdetail(response)
   {
    this.userName= response.data.fields.Name.value
   }
+
+}
+value ='';
+@wire(getObjectInfo, { objectApiName: TIMESHEET_OBJ})
+
+timesheetMetadata;
+
+@wire(getPicklistValues,
+  {
+      recordTypeId: '$timesheetMetadata.data.defaultRecordTypeId', 
+      fieldApiName: PROJECT
+  }
+)
+projectPicklist;
+//projectPicklist2 = this.projectPicklist[0];
+
+projectChange(event) {
+
+  this.value = event.detail.value;
 
 }
 
@@ -280,10 +303,11 @@ nextTimesheet()
 }
     addfunction() {
   
-  console.log(this.projectData[0])
+  //console.log(this.projectData[0])
   // console.log(numberofprojects[this.projects])
-  this.showModal= true
-  
+  this.showModal= true;
+  console.log(this.projectPicklist);
+  // this doesnt work console.log(projectPicklist);
 }
 
   modalcancel(event)
@@ -295,6 +319,7 @@ modalSave(event)
 {
   this.projects += 1
   this.numberofprojects.push(this.projectname)
+  //this.numberofprojects.push(this.projectPicklist2)
   this.showModal= false
 }
 

@@ -158,7 +158,26 @@
 							</template>
 						</tr>
 					-->
-		
+
+					<tr >
+						<th data-label="Task" scope="coloumn">
+							<lightning-button variant="base"
+							icon-name="utility:add" icon-position="left" onclick={addfunction}></lightning-button>
+								<template if:true={projectPicklist.data}>
+									<lightning-combobox name="progress" variant="label-hidden" value={value}
+										options={projectPicklist.data.values} onchange={projectChange}>
+									</lightning-combobox>
+								</template>
+						
+						</th>
+						<template for:each={rows} for:item="item">
+							<td key={item.id} data-label="Fri">
+								<lightning-input type="text" data-id={item.id} label="" variant="label-hidden" onchange={hourTotal}
+									class="slds-input label-hidden"></lightning-input>
+							</td>
+						</template>
+					</tr>
+				
 
 					
 
