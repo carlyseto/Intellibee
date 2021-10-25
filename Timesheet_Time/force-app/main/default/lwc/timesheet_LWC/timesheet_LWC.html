@@ -54,10 +54,10 @@
 								<div class="slds-truncate" title="Sat"> {sSaturday}</div>
 							</th>
 							<th class="" scope="col">
-								<div class="slds-truncate" title="Total"> Total</div>
+								<div class="slds-truncate" title="Remarks"> Remarks</div>
 							</th>
 							<th class="" scope="col">
-								<div class="slds-truncate" title="Remarks"> Remarks</div>
+								<div class="slds-truncate" title="Total"> Total</div>
 							</th>
 						</tr>
 					</thead>
@@ -168,7 +168,28 @@
 										options={projectPicklist.data.values} onchange={projectChange}>
 									</lightning-combobox>
 								</template>
-						
+						</th>
+						<template for:each={rows} for:item="item">
+							<td key={item.id} data-label="Fri">
+								<lightning-input type="text" data-id={item.id} label="" variant="label-hidden" onchange={hourTotal}
+									class="slds-input label-hidden"></lightning-input>
+							</td>
+						</template>
+					</tr>
+
+
+
+
+					<tr >
+						<th data-label="Task" scope="coloumn">
+							<lightning-button variant="base"
+							icon-name="utility:add" icon-position="left" onclick={addfunction}></lightning-button>
+							<lightning-record-edit-form object-api-name={childObjectApiName}>
+								
+								<lightning-input-field id="fieldid" required={required} variant="label-hidden" field-name={targetFieldApiName}
+									value={value} onchange={handleChange} disabled={disabled}>
+								</lightning-input-field>
+							</lightning-record-edit-form>
 						</th>
 						<template for:each={rows} for:item="item">
 							<td key={item.id} data-label="Fri">
@@ -179,7 +200,7 @@
 					</tr>
 				
 
-					
+				
 
 				
 						<tr data-label="Total" class="addAll">
@@ -248,5 +269,6 @@
 			<div class="slds-backdrop slds-backdrop_open"></div>
 		</template>
 	</div>
+
 
 </template>

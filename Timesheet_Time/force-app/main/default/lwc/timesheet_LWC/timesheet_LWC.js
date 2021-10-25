@@ -1,18 +1,20 @@
-import { LightningElement, track, wire} from 'lwc';
+import { LightningElement, track, wire, api} from 'lwc';
 import { loadStyle } from 'lightning/platformResourceLoader';
 import SAMPLE_CSS from '@salesforce/resourceUrl/Timesheet_CSS';
 import id from '@salesforce/user/Id'
 import NAME_FIELD from '@salesforce/schema/User.Name'
 import EMAIL_FIELD from '@salesforce/schema/User.Email'
 const fields = [NAME_FIELD, EMAIL_FIELD]
-import {getRecord} from 'lightning/uiRecordApi'
+import {getFieldDisplayValue, getRecord} from 'lightning/uiRecordApi'
 //import timesheetRecord from "@salesforce/apex/TimesheetLWC.createRecord";
 //import weekStart from '@salesforce/schema/Weekly_Timesheet__c.Week_Start_Date__c';
-import { createRecord } from 'lightning/uiRecordApi';
+import { createRecord, getFieldValue } from 'lightning/uiRecordApi';
 import { getPicklistValues } from 'lightning/uiObjectInfoApi';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import TIMESHEET_OBJ from '@salesforce/schema/Weekly_Timesheet__c';
 import PROJECT from '@salesforce/schema/Weekly_Timesheet__c.Test_Project__c';
+import PROJECTNAMES from '@salesforce/schema/Weekly_Timesheet__c.Project__c';
+
 
 var curr = new Date; // get current date
 var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
@@ -62,7 +64,9 @@ projectPicklist;
 projectChange(event) {
 
   this.value = event.detail.value;
-
+console.log(this.value);
+//console.log(PROJECTNAMES.value);
+//console.log(PROJECTNAMES);
 }
 
 example = "Welcome "+ this.userName + "\n" + this.sWeekNumber
@@ -376,30 +380,18 @@ modalSave(event)
             //var inputValue = parseInt(event.target.closest("tr").querySelector("td lightning-input[data-id=in"+x+"]").value);
             //listHours += inputValue;
           }
-          event.target.closest("tr").querySelector("td lightning-input[data-id=in7]").value = listHours;
-          var x = this.template.querySelectorAll("lightning-input[data-id=in7]");
-              //this.template.querySelector(".addAll lightning-input[data-id=in7]").value = parseInt(x[3].value);
+          event.target.closest("tr").querySelector("td lightning-input[data-id=in8]").value = listHours;
+          var x = this.template.querySelectorAll("lightning-input[data-id=in8]");
+              //this.template.querySelector(".addAll lightning-input[data-id=in8]").value = parseInt(x[3].value);
           var totalProjectsList = x.length;
           console.log(totalProjectsList);
           var totalProjectHours = 0;
           for(var i = 0; i < x.length - 1; i++){
             totalProjectHours += (isNaN(x[i].value) || x[i].value == "" ? 0 : parseInt(x[i].value));
           }
-          this.template.querySelector(".addAll lightning-input[data-id=in7]").value = parseInt(totalProjectHours);
+          this.template.querySelector(".addAll lightning-input[data-id=in8]").value = parseInt(totalProjectHours);
       }
 
-
-      modalcancel(event)
-      {
-        this.showModal= false
-      }
-    
-      modalSave(event)
-      {
-        this.projects += 1
-        this.numberofprojects.push(this.projectname)
-        this.showModal= false
-      }
 /*
       newRecord = {
         submitWeek : 2021-11-21
@@ -418,6 +410,38 @@ modalSave(event)
       }).catch(error => {
           alert('Error: ' +JSON.stringify(error));
       });
+      }
+
+
+
+
+
+
+
+
+
+
+
+      @api childObjectApiName = 'Weekly_Timesheet__c'; //Contact is the default value
+      @api targetFieldApiName = 'Project__c'; //AccountId is the default value
+      //@api fieldLabel = 'Your field label here';
+      @api disabled = false;
+      @api value;
+      @api required = false;
+  
+      handleChange(event) {
+          // Creates the event
+          const selectedEvent = new CustomEvent('valueselected', {
+              detail: event.detail.value
+          });
+          //dispatching the custom event
+          this.dispatchEvent(selectedEvent);
+      }
+  
+      @api isValid() {
+          if (this.required) {
+              this.template.querySelector('lightning-input-field').reportValidity();
+          }
       }
       
 } 
