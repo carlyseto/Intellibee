@@ -297,7 +297,7 @@ nextTimesheet()
     var in4 = 'in4';
     var in5 = 'in5';
     var in6 = 'in6';
-    var in7 = 'in7'
+    var in7 = 'in7';
     var in8 = 'in8';
     this.rows = [{id:in0,value:''},{id:in1,value:''},{id:in2,value:''},{id:in3,value:''},{id:in4,value:''},{id:in5,value:''},{id:in6,value:''},{id:in7,value:''},{id:in8,value:''}];
   }
@@ -401,6 +401,22 @@ modalSave(event)
         timesheetRecord({rec: newRecord});
       }
   */    
+
+
+      storeValues(event){
+        /*
+        var firstCells = this.template.querySelectorAll('td:nth-child(6)');
+var cellValues = [];
+
+
+firstCells.forEach(function(singleCell) {
+  cellValues.push(singleCell);
+});*/
+var table = this.template.querySelector("tr:nth-child(6) lightning-input[data-id=in1]").value;
+//var tableData = table.data;
+alert(table);
+      }
+
  
       createTimesheetRecord(){
         var fields = {'Week_Start_Date__c' : this.submitWeekStart};
@@ -410,13 +426,8 @@ modalSave(event)
       }).catch(error => {
           alert('Error: ' +JSON.stringify(error));
       });
+      this.storeValues();
       }
-
-
-
-
-
-
 
 
 
@@ -434,6 +445,8 @@ modalSave(event)
           const selectedEvent = new CustomEvent('valueselected', {
               detail: event.detail.value
           });
+          console.log(event.target.value);
+          console.log(event.detail.value[0]);
           //dispatching the custom event
           this.dispatchEvent(selectedEvent);
       }
@@ -443,5 +456,30 @@ modalSave(event)
               this.template.querySelector('lightning-input-field').reportValidity();
           }
       }
+
+
+
+
+      tableToArray() {
+        var result = []
+        var rows = this.template.querySelector("table").rows;
+        var cells, t;
+      
+        // Iterate over rows
+        for (var i=0, iLen=rows.length; i<iLen; i++) {
+          cells = rows[i].cells;
+          t = [];
+      
+          // Iterate over cells
+          for (var j=0, jLen=cells.length; j<jLen; j++) {
+            t.push(cells[j].textContent);
+          }
+          result.push(t);
+        }
+        alert(result);
+        return result; 
+      
+      }
+      
       
 } 
