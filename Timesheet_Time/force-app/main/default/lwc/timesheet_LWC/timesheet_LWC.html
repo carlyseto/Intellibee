@@ -103,62 +103,7 @@
 							</template>
 						</tr>
 
-						<template for:each={numberofprojects} for:item="project_item">
-							<tr key={project_item} class="slds-hint-parent" >
-								<th data-label="Task" scope="row">
-									<div class="slds-form-element">
-										<!--label class="slds-form-element__label" for="select-01">Select Label</label-->
-									
-										<div class="slds-form-element__control">
-											<div class="slds-select_container">
-
-
-												<lightning-button variant="base" title="Add new project" class="slds-float_left"
-													icon-name="utility:add" icon-position="left" onclick={addfunction}></lightning-button>
-
-												<select class="slds-select">
-                            <option value="">Project</option>
-                            <option>Option One</option>
-                            <option>Option Two</option>
-                            <option>Option Three</option>
-                          </select>
-											</div>
-										</div>
-									</div>
-								</th>
-								<template for:each={rows} for:item="item">
-									<td key={item.id} data-label="Fri">
-										<lightning-input type="text" class="slds-input label-hidden" data-id={item.id} data-label="Total"
-										label="" variant="label-hidden" onchange={hourTotal}></lightning-input>
-									</td>
-								</template>
-							</tr>
-						</template>
-
-
-
-
-
-<!--
-						<tr>
-							<th data-label="Task" scope="coloumn">
-								<div class="slds-truncate" title="Standard Tasks">
-									<lightning-combobox name="Project" label="Project" value={value}
-			
-									options={projectPicklist.data.values} onchange={projectChange}>
-				
-								</lightning-combobox>
-								</div>
-							</th>
-							<template for:each={rows} for:item="item">
-								<td key={item.id} data-label="Fri">
-									<lightning-input type="text" data-id={item.id} label="" variant="label-hidden" onchange={hourTotal}
-										class="slds-input label-hidden"></lightning-input>
-								</td>
-							</template>
-						</tr>
-					-->
-
+				<!--
 					<tr >
 						<th data-label="Task" scope="coloumn">
 							<lightning-button variant="base"
@@ -176,7 +121,7 @@
 							</td>
 						</template>
 					</tr>
-
+				-->
 
 
 
@@ -200,9 +145,6 @@
 					</tr>
 				
 
-				
-
-				
 						<tr data-label="Total" class="addAll">
 							<th data-label="Total" scope="coloumn">
 								<div class="slds-truncate" title="Standard Tasks">
@@ -233,13 +175,13 @@
 					  </button>
 			</div>
 		</lightning-card>
-		
+		<!--
 		<template if:true={projectPicklist.data}>
             <lightning-combobox name="progress" label="Lead Source" value={value}
                 options={projectPicklist.data.values} onchange={projectChange}>
             </lightning-combobox>
         </template>
-
+	-->
 
 	</form>
 		<div>
@@ -251,11 +193,14 @@
 						<div class="slds-form-element">
 							<div class="slds-form-element__control">
 								<div class="slds-select_container">
+
 									<select class="slds-select" onchange={projectvalueoption}>
-                                	<template iterator:it={projectlist}>						
+									
+                                	<template iterator:it={arrayProjectValuesList}>						
 		                              <option  key={it.value}> {it.value} </option>
 	                                </template>
-	                        </select>
+								</select>
+	                        
 								</div>
 							</div>
 						</div>
