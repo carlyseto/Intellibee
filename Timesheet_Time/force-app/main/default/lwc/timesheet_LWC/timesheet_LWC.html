@@ -103,7 +103,7 @@
 							</template>
 						</tr>
 
-				<!--
+				
 					<tr >
 						<th data-label="Task" scope="coloumn">
 							<lightning-button variant="base"
@@ -121,10 +121,27 @@
 							</td>
 						</template>
 					</tr>
-				-->
+				
+
+					<template for:each={numberofprojects} for:item="project_item">
+						<tr key={project_item} class="slds-hint-parent">
+							<th data-label="Task" scope="row">
+								<div class="slds-truncate" title="Standard Tasks">
+									{project_item}
+								</div>
+
+							</th>
+							<template for:each={rows} for:item="item">
+								<td key={item.id} data-label="Fri">
+									<lightning-input type="text" data-id={item.id} label="" variant="label-hidden" onchange={hourTotal}
+										class="slds-input label-hidden"></lightning-input>
+								</td>
+							</template>
+						</tr>
+					</template>
 
 
-
+<!--lookup
 					<tr >
 						<th data-label="Task" scope="coloumn">
 							<lightning-button variant="base"
@@ -143,7 +160,7 @@
 							</td>
 						</template>
 					</tr>
-				
+				-->
 
 						<tr data-label="Total" class="addAll">
 							<th data-label="Total" scope="coloumn">
@@ -196,7 +213,7 @@
 
 									<select class="slds-select" onchange={projectvalueoption}>
 									
-                                	<template iterator:it={arrayProjectValuesList}>						
+                                	<template iterator:it={projectlist}>						
 		                              <option  key={it.value}> {it.value} </option>
 	                                </template>
 								</select>
