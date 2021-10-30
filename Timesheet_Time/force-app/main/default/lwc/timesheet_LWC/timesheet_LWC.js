@@ -40,7 +40,8 @@ export default class Intellibee_Timesheet extends LightningElement {
 showModal = false
 
 projectData=[]
-projectlist=['ECIC','PAF','TIMESHEET']
+//projectlist=['ECIC','PAF','TIMESHEET']
+projectlist=[]
 
 
 //projectname= this.projectlist[0]
@@ -331,6 +332,7 @@ this.showModal= false
 
 modalSave(event)
 {
+  this.projectlist = this.projectValuesList.data
 this.projects += 1
 this.numberofprojects.push(this.projectname)
 this.showModal= false
@@ -497,9 +499,11 @@ alert(table);
     
       //var picklistValues = this.projectPicklist.data.picklistFieldValues;
       //console.log('picklistValues :: ' + JSON.stringify(picklistValues));
-      var listofProjects = this.projectValuesList.data;
-      this.arrayProjectValuesList.push(listofProjects);  
-
+      
+      
+      //var listofProjects = this.projectValuesList.data;
+      //this.arrayProjectValuesList.push(listofProjects);  
+console.log(this.projectValuesList.data);
     }
     @wire(getObjectInfo, {objectApiName: TIMESHEET_OBJ})
     weeklyObject({error, data}){
