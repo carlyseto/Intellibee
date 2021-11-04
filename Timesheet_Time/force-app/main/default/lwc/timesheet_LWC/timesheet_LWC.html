@@ -1,236 +1,178 @@
+<!-- sldsValidatorIgnore -->
 <template>
-	<form>
-		<lightning-card icon-name="custom:custom14 slds-box">
-		
-			<div class="banner">
-				<div class="row">
-					<div class="column">
-						<div class="weekButton">
-							<lightning-button variant="label-hidden" title="previous week Timesheet" class="slds-float_left arrow"
-								style="border-radius:100%;background:none;" icon-name="utility:jump_to_left" icon-position="left"
-								onclick={previousTimesheet}></lightning-button>
-						</div>
-					</div>
-					<div class="column">
-						<h2>Welcome {userName}!</h2>
-						<h2>{sWeekNumber}</h2>
-					</div>
-					<div class="column">
-						<lightning-button variant="neutral" title="previous week Timesheet" class="slds-float_right"
-							style="border-radius:90%" icon-name="utility:jump_to_right" icon-position="right" onclick={nextTimesheet}>
-						</lightning-button>
-					</div>
-				</div>
-			</div>
-			<div class="slds-var-m-around_medium">
-				<!--<div>{sWeekNumber}</div>-->
+    <form>
+   
+    <lightning-card icon-name= "standard:timesheet_entry slds-box">
+      <h2 class="user"> Welcome -{userName} ! </h2>
+            <div class="banner">
+                <div class="row">
+                    <div class="column">
+                        <lightning-button variant="neutral" title="previous week Timesheet" class="slds-float_left arrow"
+                            icon-name="utility:jump_to_left" icon-position="left" onclick={previousTimesheet}></lightning-button>
+                    </div>
+                    <div class="column">
+                        <h2>{sWeekNumber}</h2>
+                    </div>
+                    <div class="column">
+                        <lightning-button variant="neutral" title="previous week Timesheet" class="slds-float_right"
+                            style="border-radius:90%" icon-name="utility:jump_to_right" icon-position="right" onclick={nextTimesheet}>
+                        </lightning-button>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-var-m-around_medium">
+                <table class="style-table slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped"
+                    aria-label="Example table of Opportunities with striped rows">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Project">Project</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Task">Task</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Sun"> {sSunday}</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Mon"> {sMonDay}</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Tue"> {sTuesday}</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Wed"> {sWednesday}</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Thu"> {sThurday}</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Fri"> {sFriday}</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Sat"> {sSaturday}</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Total"> Total</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Remarks"> Remarks</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th data-label="Task" scope="coloumn">
+                                <div class="slds-truncate" title="Standard Tasks">
+                                    Holiday
+                                </div>
+                            </th>
+                            <template for:each={WeekDayinput} for:item="w_item">
+                                <td key={w_item} data-label="Fri">
+                                    <input type="text" title={w_item}  onkeyup={Holidayvalue} class="slds-input"  width="20px" disabled={isSaved} />
+                                </td>
+                            </template>
+                        </tr>
+                        <tr>
+                            <th data-label="Task" scope="coloumn">
+                                <div class="slds-truncate" title="Standard Tasks">
+                                    Training
+                                </div>
+                            </th>
+                            <template for:each={WeekDayinput} for:item="w_item">
+                                <td key={w_item} data-label="Fri">
+                                    <input type="text" title={w_item}  onkeyup={Trainingvalue} class="slds-input" disabled={isSaved} />
+                                </td>
+                            </template>
+                        </tr>
+                        <tr>
+                            <th data-label="Task" scope="coloumn">
+                                <div class="slds-truncate" title="Standard Tasks">
+                                    Leave
+                                </div>
+                            </th>
+                            <template for:each={WeekDayinput} for:item="w_item">
+                                <td key={w_item} data-label="Fri">
+                                    <input type="text" title={w_item}  onkeyup={leavevalue} class="slds-input" disabled={isSaved}/>
+                                </td>
+                            </template>
+                        </tr>
+                        <template for:each={numberofprojects} for:item="project_item">
+                            <tr key={project_item} class="slds-hint-parent">
+                                <th data-label="Task" scope="row">
+                                    <div class="slds-truncate" title="Standard Tasks">
+                                        {project_item}
+                                    </div>
+                                    
+                                </th>
+                                <template for:each={WeekDayinput} for:item="w_item">
+                                    <td key={w_item} data-label="Fri">
+                                        <lightning-input name ={project_item} data-id={w_item.id} type="text" title={w_item} onchange={hourTotal} onkeyup={Projectvalue} class="label-hidden" disabled={isSaved}></lightning-input>
+                                    </td>
+                                </template>
+                            </tr>
+                        </template>
+                        <tr>
+                            <th data-label="Total" scope="coloumn">
+                                <div class="slds-truncate" title="Standard Tasks">
+                                    Total
+                                </div>
+                            </th>
+                            <!-- <template for:each={WeekDayinput} for:item="w_item">
+                                <td key={w_item} data-label="Fri">
+                                    <input type="text" title={w_item}  onkeyup={Totalvalue} class="slds-input" /> -->
+                                    <td data-label="Fri">
+                                        <div>
+                                        {total}
+                                    </div>
+                                    </td>
+                                    <td class="addAll">
+                                        <lightning-input data-id="total" variant="label-hidden" class="label-hidden"
+                                        ></lightning-input>
+                                    </td>
+                                <!-- </td>
+                            </template> -->
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <lightning-button variant="neutral" title="Add new project" class="slds-float_left" icon-name="utility:add"
+                icon-position="left" onclick={addfunction}></lightning-button>
+        </lightning-card>
+        <div style="display:flex;justify-content:center;">
+            <lightning-button variant="neutral" title="redo" class="slds-float_right" icon-name="utility:undo"
+                icon-position="right" onclick={resetAllinputvalues} label="Cancel" disabled={isSaved}></lightning-button>
+            <lightning-button variant="neutral" title="Submit" class="slds-float_right" icon-name="utility:send"
+                icon-position="left" onclick={apexprojectinsertion} label="Submit" disabled={isSaved}></lightning-button>
 
-				<table class="style-table slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped"
-					aria-label="Example table of Opportunities with striped rows">
-					<thead>
-						<tr class="slds-line-height_reset">
-							<th class="" scope="col">
-								<div class="slds-truncate" title="Task">Task</div>
-							</th>
-							<th class="" scope="col">
-								<div class="slds-truncate" title="Sun"> {sSunday}</div>
-							</th>
-							<th class="" scope="col">
-								<div class="slds-truncate" title="Mon"> {sMonDay}</div>
-							</th>
-							<th class="" scope="col">
-								<div class="slds-truncate" title="Tue"> {sTuesday}</div>
-							</th>
-							<th class="" scope="col">
-								<div class="slds-truncate" title="Wed"> {sWednesday}</div>
-							</th>
-							<th class="" scope="col">
-								<div class="slds-truncate" title="Thu"> {sThurday}</div>
-							</th>
-							<th class="" scope="col">
-								<div class="slds-truncate" title="Fri"> {sFriday}</div>
-							</th>
-							<th class="" scope="col">
-								<div class="slds-truncate" title="Sat"> {sSaturday}</div>
-							</th>
-							<th class="" scope="col">
-								<div class="slds-truncate" title="Remarks"> Remarks</div>
-							</th>
-							<th class="" scope="col">
-								<div class="slds-truncate" title="Total"> Total</div>
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<th data-label="Task" scope="coloumn">
-								<div class="slds-truncate" title="Standard Tasks">
-									Holiday
-								</div>
-							</th>
-							<template for:each={rows} for:item="item">
-								<td key={item.id} data-label="Fri">
-									<lightning-input type="text" data-id={item.id} label="" variant="label-hidden" onchange={hourTotal}
-										class="slds-input label-hidden"></lightning-input>
-								</td>
-							</template>
-						</tr>
-						<tr>
-							<th data-label="Task" scope="coloumn">
-								<div class="slds-truncate" title="Standard Tasks">
-									Training
-								</div>
-							</th>
-							<template for:each={rows} for:item="item">
-								<td key={item.id} data-label="Fri">
-									<lightning-input type="text" data-id={item.id} label="" variant="label-hidden" onchange={hourTotal}
-										class="slds-input label-hidden"></lightning-input>
-								</td>
-							</template>
-						</tr>
-
-						<tr>
-							<th data-label="Task" scope="coloumn">
-								<div class="slds-truncate" title="Standard Tasks">
-									Leave
-								</div>
-							</th>
-							<template for:each={rows} for:item="item">
-								<td key={item.id} data-label="Fri">
-									<lightning-input type="text" data-id={item.id} label="" variant="label-hidden" onchange={hourTotal}
-										class="slds-input label-hidden"></lightning-input>
-								</td>
-							</template>
-						</tr>
-
-				
-					<tr >
-						<th data-label="Task" scope="coloumn">
-							<lightning-button variant="base"
-							icon-name="utility:add" icon-position="left" onclick={addfunction}></lightning-button>
-								<template if:true={projectPicklist.data}>
-									<lightning-combobox name="progress" variant="label-hidden" value={value}
-										options={projectPicklist.data.values} onchange={projectChange}>
-									</lightning-combobox>
-								</template>
-						</th>
-						<template for:each={rows} for:item="item">
-							<td key={item.id} data-label="Fri">
-								<lightning-input type="text" data-id={item.id} label="" variant="label-hidden" onchange={hourTotal}
-									class="slds-input label-hidden"></lightning-input>
-							</td>
-						</template>
-					</tr>
-				
-
-					<template for:each={numberofprojects} for:item="project_item">
-						<tr key={project_item} class="slds-hint-parent">
-							<th data-label="Task" scope="row">
-								<div class="slds-truncate" title="Standard Tasks">
-									{project_item}
-								</div>
-
-							</th>
-							<template for:each={rows} for:item="item">
-								<td key={item.id} data-label="Fri">
-									<lightning-input type="text" data-id={item.id} label="" variant="label-hidden" onchange={hourTotal}
-										class="slds-input label-hidden"></lightning-input>
-								</td>
-							</template>
-						</tr>
-					</template>
-
-
-<!--lookup values
-					<tr >
-						<th data-label="Task" scope="coloumn">
-							<lightning-button variant="base"
-							icon-name="utility:add" icon-position="left" onclick={addfunction}></lightning-button>
-							<lightning-record-edit-form object-api-name={childObjectApiName}>
-								
-								<lightning-input-field id="fieldid" required={required} variant="label-hidden" field-name={targetFieldApiName}
-									value={value} onchange={handleChange} disabled={disabled}>
-								</lightning-input-field>
-							</lightning-record-edit-form>
-						</th>
-						<template for:each={rows} for:item="item">
-							<td key={item.id} data-label="Fri">
-								<lightning-input type="text" data-id={item.id} label="" variant="label-hidden" onchange={hourTotal}
-									class="slds-input label-hidden"></lightning-input>
-							</td>
-						</template>
-					</tr>
-				-->
-
-						<tr data-label="Total" class="addAll">
-							<th data-label="Total" scope="coloumn">
-								<div class="slds-truncate" title="Standard Tasks">
-									Total
-								</div>
-							</th>
-							<template for:each={rows} for:item="item">
-								<td key={item.id}>
-									<lightning-input type="text" class="slds-input label-hidden" data-id={item.id} data-label="Total"
-									label="" variant="label-hidden"></lightning-input>
-								</td>
-							</template>
-						</tr>
-
-					</tbody>
-				</table>
-			</div>
-			<div style="display:flex;justify-content:center;">
-				<lightning-button variant="neutral" title="redo" class="slds-float_right" icon-name="utility:undo"
-					icon-position="right" onclick={previousTimesheet} label="Cancel"></lightning-button>
-				<lightning-button variant="neutral" title="Submit" class="slds-float_right test" icon-name="utility:send"
-					icon-position="left" onclick={storeValues} label="&nbsp;Submit"></lightning-button>
-					<button class="slds-button slds-button_icon" title="Settings">
-						<svg class="slds-button__icon" aria-hidden="true">
-						  <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#settings"></use>
-						</svg>
-						<span class="slds-assistive-text">Settings</span>
-					  </button>
-			</div>
-		</lightning-card>
-		<!--
-		<template if:true={projectPicklist.data}>
-            <lightning-combobox name="progress" label="Lead Source" value={value}
-                options={projectPicklist.data.values} onchange={projectChange}>
-            </lightning-combobox>
+        </div>
+        
+        
+    </form>
+    <div>
+        <template if:true={showModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+               <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control">
+                        <div class="slds-select_container">
+                            <select class="slds-select" onchange={projectvalueoption}>
+                                    <template iterator:it={projectlist}>                        
+                                      <option  key={it.value}> {it.value} </option>
+                                    </template>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+              </div>
+              <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral" onclick={modalcancel}>Cancel</button>
+                <button class="slds-button slds-button_brand" onclick={modalSave}>Save</button>
+              </footer>
+            </div>
+          </section>
+          <div class="slds-backdrop slds-backdrop_open"></div>
         </template>
-	-->
-
-	</form>
-		<div>
-		<template if:true={showModal}>
-			<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
-				aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
-				<div class="slds-modal__container">
-					<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
-						<div class="slds-form-element">
-							<div class="slds-form-element__control">
-								<div class="slds-select_container">
-
-									<select class="slds-select" onchange={projectvalueoption}>
-									
-                                	<template iterator:it={projectlist}>						
-		                              <option  key={it.value}> {it.value} </option>
-	                                </template>
-								</select>
-	                        
-								</div>
-							</div>
-						</div>
-					</div>
-					<footer class="slds-modal__footer">
-						<button class="slds-button slds-button_neutral" onclick={modalcancel}>Cancel</button>
-						<button class="slds-button slds-button_brand" onclick={modalSave}>Save</button>
-					</footer>
-				</div>
-			</section>
-			<div class="slds-backdrop slds-backdrop_open"></div>
-		</template>
-	</div>
-
-
+    </div>
 </template>

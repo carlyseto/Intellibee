@@ -1,389 +1,318 @@
-import { LightningElement, track, wire, api} from 'lwc';
-import { loadStyle } from 'lightning/platformResourceLoader';
-import SAMPLE_CSS from '@salesforce/resourceUrl/Timesheet_CSS';
+import { LightningElement, track,wire } from 'lwc';
 import id from '@salesforce/user/Id'
 import NAME_FIELD from '@salesforce/schema/User.Name'
 import EMAIL_FIELD from '@salesforce/schema/User.Email'
 const fields = [NAME_FIELD, EMAIL_FIELD]
-import {getFieldDisplayValue, getRecord} from 'lightning/uiRecordApi'
+import {getRecord, createRecord} from 'lightning/uiRecordApi'
+import timesheetinsert from '@salesforce/apex/Timesheet.timesheetinsert'
 import PROJECTVALUES from "@salesforce/apex/TimesheetLWC.createRecord";
-//import weekStart from '@salesforce/schema/Weekly_Timesheet__c.Week_Start_Date__c';
-import { createRecord, getFieldValue } from 'lightning/uiRecordApi';
-import { getPicklistValues } from 'lightning/uiObjectInfoApi';
-import { getObjectInfo } from 'lightning/uiObjectInfoApi';
-import TIMESHEET_OBJ from '@salesforce/schema/Weekly_Timesheet__c';
-import PROJECT from '@salesforce/schema/Weekly_Timesheet__c.Test_Project__c';
-import PROJECTNAMES from '@salesforce/schema/Weekly_Timesheet__c.Project__c';
-
-
-var curr = new Date; // get current date
-var first = curr.getDate() - curr.getDay(); // First day is the day of the month - the day of the week
-var last = first + 6; // last day is the first day + 6
-
-var projectValues = [PROJECTNAMES];
-
-//var firstDay = first.getDay();
-
-console.log(curr);
-console.log(first);
-console.log(last);
-//console.log(firstDay);
-//submitWeek;
+import { loadStyle } from 'lightning/platformResourceLoader';
+import SAMPLE_CSS from '@salesforce/resourceUrl/Timesheet_CSS';
 
 export default class Intellibee_Timesheet extends LightningElement {
 
   @wire(PROJECTVALUES)
   projectValuesList
-
-  arrayProjectValuesList = []
-
-showModal = false
-
-projectData=[]
-//projectlist=['ECIC','PAF','TIMESHEET']
-projectlist=[]
-
-
-//projectname= this.projectlist[0]
-projectname = this.arrayProjectValuesList[0]
-
-userid =id
-userName
-submitWeekStart
-total=0
-@wire(getRecord,{recordId:'$userid',fields})
-userdetail(response)
-{
-if(response.data)
-{
-  this.userName= response.data.fields.Name.value
-}
-
-}
-value ='';
-@wire(getObjectInfo, { objectApiName: TIMESHEET_OBJ})
-
-timesheetMetadata;
-
-@wire(getPicklistValues,
-{
-    recordTypeId: '$timesheetMetadata.data.defaultRecordTypeId', 
-    fieldApiName: PROJECT
-}
-)
-projectPicklist;
-//projectPicklist2 = this.projectPicklist[0];
-
-projectChange(event) {
-
-this.value = event.detail.value;
-console.log(this.value);
-//console.log(PROJECTNAMES.value);
-//console.log(PROJECTNAMES);
-}
-
-findPicklist(){
-var picklistValues = this.projectPicklist.data.picklistFieldValues.values;
-console.log('picklistValues :: ' + JSON.stringify(values));
-}
-
-example = "Welcome "+ this.userName + "\n" + this.sWeekNumber
-
-Projectvalue(event)
-{
-
-var project={}
-this.projectTitle = event.target.name
-project[event.target.name]=this.weekvalue
-project[event.target.name][event.target.title]= event.target.value
-this.projectData.push(project)
-
-this.calculatetotal()
-}
-calculatetotal()
-{
-console.log('sam')
-console.log(this.projectData[0])
-for(let i in projectData)
-  {
-  console.log(i)
-  }
-}
-projectvalueoption(event)
-{
-this.projectname= event.target.value
-}
-leavevalue(event) {
-if (event.target.title === 'Sun' || event.target.title === 'Sat') {
-  event.target.disabled = true
-  event.target.value = ''
   
-}
-}
-
-
-WeekDayinput=['LeaveSun','LeaveMon','LeaveTue','LeaveWed','LeaveThu','LeaveFri','LeaveSat','Total','Remarks']
-
-
-Trainingvalue(event)
-{
-console.log('sam')
-console.log(event.target.title)
-console.log(event.target.value)
-}
-Holidayvalue(event)
-{
-
-}
-get sSunday()
-{
-return this.Days[0]
-}
-
-get sMonDay()
-{
-return this.Days[1]
-}
-get sTuesday()
-{
-return this.Days[2]
-}
-
-get sWednesday()
-{
-return this.Days[3]
-}
-
-get sThurday()
-{
-return this.Days[4]
-}
-
-get sFriday()
-{
-return this.Days[5]
-}
-
-get sSaturday()
-{
-return this.Days[6]
-}
-get sWeekNumber()
-{
-
-return `Week Start : ${this.startweek}`
-}
-startweek
-@track
-//numberofprojects=['project0']
-numberofprojects=[this.arrayProjectValuesList[0]]
-
-
-Days = new Array();
-d = new Date().getDate()
-m= new Date().getMonth();
-y= new Date().getFullYear();
-day= new Date().getDay()
-isPreviousPage= false
-isNextPage= false
-isPreviousNexttoggle =false
-page =0
-projects=0
-nWeekNumber= this.weekNumber()
-
-
-
-previousTimesheet()
-{
-
-this.page-=1
-this.nWeekNumber-=1
-if(this.page > 0)
-{
-
-this.d -=7
-this.day=0
-}
-else if(this.page === 0)
-{
-this.d =  new Date().getDate()
-this.day= new Date().getDay()
-}
-else{
-if(this.isPreviousPage === true && this.isNextPage === false)
-{
-  if(this.isPreviousNexttoggle=== true)
+  isSaved =false
+  showModal = false
+  selectedproject= new Array()
+  projectData=Array()
+  projectlist=  new Array()  //['ECIC','PAF','TIMESHEET']
+  projectname='' // this.projectlist[0]
+  userid =id
+  userName
+  total=0
+  @wire(getRecord,{recordId:'$userid',fields})
+  userdetail(response)
   {
-  this.d -=1
-  this.isPreviousNexttoggle = false
-  }
-  else
-  {
-  this.d -=7
-  }
-}
-else
-{   
-this.d -= new Date().getDay()+1
-this.isNextPage = false
-}
-this.day= 6
-}
-this.datedisplay()
-this.isPreviousPage = true
-}
-
-nextTimesheet()
-{
-this.page+=1
-this.nWeekNumber+=1
-if(this.page < 0 && this.isNextPage ===false)
-{
-this.day=0
-if(this.isPreviousNexttoggle == false)
-{
-this.d +=1
-}
-else{
-      this.d +=7
+    if(response.data)
+    {
+     this.userName= response.data.fields.Name.value
     }
-    this.isPreviousNexttoggle = true
+  
+  }
+  
+
+  createTimesheetRecord(){
+    var fields = {'Week_Start_Date__c' : this.submitWeekStart,
+    'Sunday__c' : this.dayValue[1], 'Monday__c' : this.dayValue[2], 'Tuesday__c' : this.dayValue[3], 
+    'Wednesday__c' : this.dayValue[4], 'Thursday__c' : this.dayValue[5], 'Friday__c' : this.dayValue[6], 
+    'Saturday__c' : this.dayValue[7]};
+    var objRecordInput = {'apiName' : 'Weekly_Timesheet__c', fields};
+    createRecord(objRecordInput).then(response => {
+      alert('Record created with Id: ' +response.id);
+  }).catch(error => {
+      alert('Error: ' +JSON.stringify(error));
+  });
+  }
+
+  apexprojectinsertion()
+  {
+    this.isSaved= true;
+    timesheetinsert({project:JSON.stringify(this.projectData)});
+
+    createTimesheetRecord();
+  }
+  
+
+
+
+  WeekDayinput = ['Task', {id:'in0', value:''}, {id:'in1', value:''}, {id:'in2', value:''}, {id:'in3', value:''}, {id:'in4', value:''}, {id:'in5', value:''}, {id:'in6', value:''}, {id:'in7', value:''}, 'Remarks']
+  //WeekDayinput = ['Task','Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Total', 'Remarks']
+  weekvalue = {'Sun':0,'Mon':0, 'Tue':0, 'Wed':0, 'Thu':0, 'Fri':0, 'Sat':0}
+  project={}
+  
+  Projectvalue(event)
+  {
+    this.projectTitle = event.target.name
+    console.log(this.projectTitle)
+    console.log(event.target.title)
+    this.project[event.target.name][event.target.title]= event.target.value
+    console.log(this.project)
+    this.calculatetotal()
+  }
+  calculatetotal()
+  {
+    this.total=0
+    for(let i =0 ; i< this.projectData.length ; i++)
+     {
+       console.log(this.projectData[i])
+       for(let j= 1; j< 8; j++){
+         this.total+=  parseInt(this.projectData[i][this.selectedproject[i]][this.WeekDayinput[j]])
+       }
+     }
+  }
+  projectvalueoption(event)
+  {
+    this.projectname= event.target.value
+    if(!this.projectname)
+    {
+      this.projectname = this.projectlist[0]
 
     }
-    else if(this.page === 0)
-    { 
+   
+    console.log(this.projectname)
+    //this.project[this.projectname]= {...this.weekvalue}
+    //this.projectData.push(this.project)
+  }
+  leavevalue(event) {
+    if (event.target.title === 'Sun' || event.target.title === 'Sat') {
+      event.target.disabled = true
+      event.target.value = 0
+     
+    }
+    this.project['Leave'][event.target.title]= event.target.value
+   
+    this.calculatetotal()
+  }
+  Trainingvalue(event) {
+    console.log(event.target.value)
+    this.project['Training'][event.target.title]= event.target.value
+    this.calculatetotal()
+    
+  }
+  Holidayvalue(event) {
+    if (event.target.title === 'Sun' || event.target.title === 'Sat') {
+      event.target.disabled = true
+      event.target.value = 0
+
+    }
+    this.project['Holiday'][event.target.title]= event.target.value
+   
+    this.calculatetotal()
+   
+  }
+  get sSunday() {
+    return this.Days[0]
+  }
+
+  get sMonDay() {
+    return this.Days[1]
+  }
+  get sTuesday() {
+    return this.Days[2]
+  }
+
+  get sWednesday() {
+    return this.Days[3]
+  }
+
+  get sThurday() {
+    return this.Days[4]
+  }
+
+  get sFriday() {
+    return this.Days[5]
+  }
+
+  get sSaturday() {
+    return this.Days[6]
+  }
+  get sWeekNumber() {
+
+    return `Week start : ${this.startweek}`
+  }
+  startweek
+  @track
+ numberofprojects = new Array() ;  //this.projectlist[0]
+
+  Days = new Array();
+  d = new Date().getDate()
+  m = new Date().getMonth();
+  y = new Date().getFullYear();
+  day = new Date().getDay()
+  isPreviousPage = false
+  isNextPage = false
+  isPreviousNexttoggle = false
+  page = 0
+  projects = 0
+  submitWeekStart
+
+  previousTimesheet() {
+
+    this.page -= 1
+    
+    if (this.page > 0) {
+
+      this.d -= 7
+      this.day = 0
+    }
+    else if (this.page === 0) {
+      this.d = new Date().getDate()
+      this.day = new Date().getDay()
+    }
+    else {
+      if (this.isPreviousPage === true && this.isNextPage === false) {
+        if (this.isPreviousNexttoggle === true) {
+          this.d -= 1
+          this.isPreviousNexttoggle = false
+        }
+        else {
+          this.d -= 7
+        }
+      }
+      else {
+        this.d -= new Date().getDay() + 1
+        this.isNextPage = false
+      }
+      this.day = 6
+    }
+    this.datedisplay()
+    this.isPreviousPage = true
+    this.template.querySelector('form').reset();
+    this.total=0
+  }
+
+  nextTimesheet() {
+    this.page += 1
+    this.nWeekNumber += 1
+    if (this.page < 0 && this.isNextPage === false) {
+      this.day = 0
+      if (this.isPreviousNexttoggle == false) {
+        this.d += 1
+      }
+      else {
+        this.d += 7
+      }
+      this.isPreviousNexttoggle = true
+
+    }
+    else if (this.page === 0) {
       this.isPreviousPage = false
       this.isPreviousNexttoggle = false
-      this.d =  new Date().getDate()
-      this.day= new Date().getDay()
+      this.d = new Date().getDate()
+      this.day = new Date().getDay()
     }
-    else 
-    {
-      if(this.page === 1)
-      {
-            this.d += 7- this.day
-            this.day=0
+    else {
+      if (this.page === 1) {
+        this.d += 7 - this.day
+        this.day = 0
       }
-      else
-      {
-            this.day=0
-            this.d +=7
+      else {
+        this.day = 0
+        this.d += 7
       }
       this.isNextPage = true
     }
     this.datedisplay()
-}
-datedisplay()
-{
+    this.template.querySelector('form').reset();
+    this.total=0
+  }
+  datedisplay() {
     this.Days = new Array();
-    this.startweek = new Date(this.y,this.m,this.d-(this.day)).toDateString();
+    this.startweek = new Date(this.y, this.m, this.d - (this.day)).toDateString();
     this.startweek2 = new Date(this.y,this.m,this.d-(this.day));
-    //console.log(this.startweek2);
-    //console.log(this.startweek2.getFullYear(), this.startweek2.getMonth()+1, this.startweek2.getDate());
-    var today = new Date().getFullYear()+'-'+("0"+(new Date().getMonth()+1)).slice(-2)+'-'+("0"+new Date().getDate()).slice(-2);
-    //console.log(today);
     var convertMonthNumber = this.startweek2.getMonth()+1;
-    console.log(convertMonthNumber);
     this.submitWeekStart = this.startweek2.getFullYear()+"-"+convertMonthNumber+"-"+this.startweek2.getDate();
-    console.log("submitWeekStart "+this.submitWeekStart);
+    for (var i = -(this.day); i <= (6 - this.day); i++) {
+      var val = new Date(this.y, this.m, this.d + i).toDateString();
+      this.Days.push(val.slice(0, 10))
+    }
+    console.log(this.submitWeekStart);
+  }
+  connectedCallback() {
+
+    this.datedisplay()
+    this.selectedproject.push('Holiday')
+    this.project['Holiday']= {...this.weekvalue}
+    this.projectData.push(this.project)   
+    this.selectedproject.push('Leave')
+    this.project['Leave']= {...this.weekvalue}
+    this.projectData.push(this.project)
+    this.selectedproject.push('Training')
+    this.project['Training']= {...this.weekvalue}
+    this.projectData.push(this.project)
     
-    for(var i=-(this.day);i<=(6-this.day);i++)
+  }
+
+  renderedCallback() {
+
+    Promise.all([loadStyle(this, SAMPLE_CSS)]);
+  }
+
+  addfunction() {
+    this.projectlist =[...this.projectValuesList.data]
+   
+    this.showModal= true
+  }
+
+  modalcancel(event)
+  {
+    console.log(this.projectValuesList.data[0]);
+    this.showModal= false
+  }
+
+  modalSave(event)
+  {
+    this.projects += 1
+    if(!this.projectname)
     {
-    var val=new Date(this.y,this.m,this.d+i).toDateString();
-
-      this.Days.push(val.slice(0,10));
-    }
-
-}
-
-weekNumber()
-{
-  var onejan = new Date(this.y,0,1);
-  var today = new Date(this.y,this.m,this.d);
-  var dayOfYear = ((today - onejan + 86400000)/86400000);
-
-  return Math.ceil(dayOfYear/7)
-}
-
-connectedCallback()   
-{
-  this.datedisplay()
-  var in0 = 'in0';
-  var in1 = 'in1';
-  var in2 = 'in2';
-  var in3 = 'in3';
-  var in4 = 'in4';
-  var in5 = 'in5';
-  var in6 = 'in6';
-  var in7 = 'in7';
-  var in8 = 'in8';
-  this.rows = [{id:in0,value:''},{id:in1,value:''},{id:in2,value:''},{id:in3,value:''},{id:in4,value:''},{id:in5,value:''},{id:in6,value:''},{id:in7,value:''},{id:in8,value:''}];
-}
-renderedCallback() {
-
-  Promise.all([loadStyle(this, SAMPLE_CSS)]);
-}
-
-
-modalcancel(event)
-{
-this.showModal= false
-}
-
-modalSave(event)
-{
-  this.projectlist = this.projectValuesList.data
-this.projects += 1
-this.numberofprojects.push(this.projectname)
-this.showModal= false
-}
-
-    test(event){
-      //var a = this.template.querySelector(".Total .total1").value;
-      //var x = event.target.getAttribute('data-label');
-      //console.log(event.target.getAttribute('data-label'));
-      //var className2 = event.target.className;
+      this.projectname = this.projectlist[0]
       
-      var findClassName = new RegExp("addTotal[0-9]");
-      console.log(findClassName);
-      //var findMatch = findClassName.exec(className2);
-      var className2 = event.target.closest("tr").querySelector("td lightning-input[data-id=in1]").value;
-      //var selectClass = className2.querySelector("."+findClassName);
-      //var findMatch = findClassName.exec(className2);
-      //console.log(findMatch[0]);
-      console.log(className2);
-      //console.log(selectClass);
-      
-      //var a = parseInt(this.template.querySelector(".addTotal2 lightning-input[data-id=in1]").value);
-      //console.log(a);
-      //var b = this.template.querySelector("lightning-input[data-id=in1]").value;
-      //console.log(b);
 
     }
-/*
-    hourTotal(event){
-        var listHours = 0;
-        var totalListHours = 0;
-        for(var x = 0; x <= 6; x++){
-          var inputValue = parseInt(event.target.closest("tr").querySelector("td lightning-input[data-id=in"+x+"]").value);
-          listHours += inputValue;
-        }
-        event.target.closest("tr").querySelector("td lightning-input[data-id=in7]").value = listHours;
-        var x = this.template.querySelectorAll("lightning-input[data-id=in7]");
-        this.template.querySelector(".addAll lightning-input[data-id=in7]").value = parseInt(x[3].value);
+    this.selectedproject.push(this.projectname)
+    this.project[this.projectname]= {...this.weekvalue}
+    this.projectData.push(this.project)
+    this.numberofprojects.push(this.projectname)
+    this.showModal= false
+  }
+
+  resetAllinputvalues(event)
+  {
+    this.template.querySelector('form').reset();
+    for(let i =0 ; i< this.projectData.length ; i++)
+    {
+      console.log(this.projectData[i])
+      for(let j= 1; j< 8; j++){
+        this.projectData[i][this.selectedproject[i]][this.WeekDayinput[j]]=0
+      }
     }
-    */
-    /*
-    hourTotal(event){
-        var listHours = 0;
-        for(var x = 0; x <= 6; x++){
-          var inputValue = parseInt(event.target.closest("tr").querySelector("td input[data-id=in"+x+"]").value);
-          listHours += inputValue;
-        }
-        event.target.closest("tr").querySelector("td input[data-id=in7]").value = listHours;
-    }
-*/
-    hourTotal(event){
+    this.total=0
+
+  }
+      hourTotal(event){
         var listHours = 0;
         var totalListHours = 0;
         for(var x = 0; x <= 6; x++){
@@ -391,127 +320,26 @@ this.showModal= false
           //var inputValue = parseInt(event.target.closest("tr").querySelector("td lightning-input[data-id=in"+x+"]").value);
           //listHours += inputValue;
         }
-        event.target.closest("tr").querySelector("td lightning-input[data-id=in8]").value = listHours;
-        var x = this.template.querySelectorAll("lightning-input[data-id=in8]");
+        event.target.closest("tr").querySelector("td lightning-input[data-id=in7]").value = listHours;
+        var x = this.template.querySelectorAll("lightning-input[data-id=in7]");
             //this.template.querySelector(".addAll lightning-input[data-id=in8]").value = parseInt(x[3].value);
         var totalProjectsList = x.length;
         console.log(totalProjectsList);
         var totalProjectHours = 0;
-        for(var i = 0; i < x.length - 1; i++){
+        for(var i = 0; i < x.length; i++){
           totalProjectHours += (isNaN(x[i].value) || x[i].value == "" ? 0 : parseInt(x[i].value));
         }
-        this.template.querySelector(".addAll lightning-input[data-id=in8]").value = parseInt(totalProjectHours);
+        this.template.querySelector(".addAll lightning-input[data-id=total]").value = parseInt(totalProjectHours);
+        console.log("line 312"+this.projectname);
+
+        this.dayValue = new Array();
+        this.dayValue.push(this.projectname);
+        for(var x = 0; x <= 6; x++){
+          var i = event.target.closest("tr").querySelector("td lightning-input[data-id=in"+x+"]").value;
+          this.dayValue.push(i);
+        }        
+        console.log(this.dayValue);
+        return this.dayValue;
     }
 
-/*
-    newRecord = {
-      submitWeek : 2021-11-21
-    }
-
-    createTimesheetRecord(event){
-      timesheetRecord({rec: newRecord});
-    }
-*/    
-
-
-    storeValues(event){
-      /*
-      var firstCells = this.template.querySelectorAll('td:nth-child(6)');
-var cellValues = [];
-
-
-firstCells.forEach(function(singleCell) {
-cellValues.push(singleCell);
-});*/
-var table = this.template.querySelector("tr:nth-child(6) lightning-input[data-id=in1]").value;
-//var tableData = table.data;
-alert(table);
-    }
-
-
-    createTimesheetRecord(){
-      var fields = {'Week_Start_Date__c' : this.submitWeekStart};
-      var objRecordInput = {'apiName' : 'Weekly_Timesheet__c', fields};
-      createRecord(objRecordInput).then(response => {
-        alert('Record created with Id: ' +response.id);
-    }).catch(error => {
-        alert('Error: ' +JSON.stringify(error));
-    });
-    this.storeValues();
-    }
-
-
-    @api childObjectApiName = 'Weekly_Timesheet__c'; //Contact is the default value
-    @api targetFieldApiName = 'Project__c'; //AccountId is the default value
-    //@api fieldLabel = 'Your field label here';
-    @api disabled = false;
-    @api value;
-    @api required = false;
-
-    handleChange(event) {
-        // Creates the event
-        const selectedEvent = new CustomEvent('valueselected', {
-            detail: event.detail.value
-        });
-        console.log(event.target.value);
-        console.log(event.detail.value[0]);
-        //dispatching the custom event
-        this.dispatchEvent(selectedEvent);
-    }
-
-    @api isValid() {
-        if (this.required) {
-            this.template.querySelector('lightning-input-field').reportValidity();
-        }
-    }
-
-
-
-
-    tableToArray() {
-      var result = []
-      var rows = this.template.querySelector("table").rows;
-      var cells, t;
-    
-      // Iterate over rows
-      for (var i=0, iLen=rows.length; i<iLen; i++) {
-        cells = rows[i].cells;
-        t = [];
-    
-        // Iterate over cells
-        for (var j=0, jLen=cells.length; j<jLen; j++) {
-          t.push(cells[j].textContent);
-        }
-        result.push(t);
-      }
-      alert(result);
-      return result; 
-    
-    }
-    
-    addfunction() {
-
-      //console.log(this.projectData[0])
-      // console.log(numberofprojects[this.projects])
-      this.showModal= true;
-      //console.log(this.projectPicklist);
-      // this doesnt work console.log(projectPicklist);
-    
-      //var picklistValues = this.projectPicklist.data.picklistFieldValues;
-      //console.log('picklistValues :: ' + JSON.stringify(picklistValues));
-      
-      
-      //var listofProjects = this.projectValuesList.data;
-      //this.arrayProjectValuesList.push(listofProjects);  
-console.log(this.projectValuesList.data);
-    }
-    @wire(getObjectInfo, {objectApiName: TIMESHEET_OBJ})
-    weeklyObject({error, data}){
-      if(data){
-        console.log(data.fields.Project__c.referenceToInfos[0].nameFields);
-      }
-      else{
-        console.log(error);
-      }
-    }
-} 
+}
