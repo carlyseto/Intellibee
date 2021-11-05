@@ -1,11 +1,12 @@
-import { LightningElement, track,wire } from 'lwc';
-import id from '@salesforce/user/Id'
-import NAME_FIELD from '@salesforce/schema/User.Name'
-import EMAIL_FIELD from '@salesforce/schema/User.Email'
-const fields = [NAME_FIELD, EMAIL_FIELD]
-import {getRecord, createRecord} from 'lightning/uiRecordApi'
-import timesheetinsert from '@salesforce/apex/Timesheet.timesheetinsert'
-import PROJECTVALUES from "@salesforce/apex/TimesheetLWC.createRecord";
+import { LightningElement, track,wire, api } from 'lwc';
+import id from '@salesforce/user/Id';
+import NAME_FIELD from '@salesforce/schema/User.Name';
+import EMAIL_FIELD from '@salesforce/schema/User.Email';
+const fields = [NAME_FIELD, EMAIL_FIELD];
+import {getRecord, createRecord} from 'lightning/uiRecordApi';
+import timesheetinsert from '@salesforce/apex/Timesheet.timesheetinsert';
+import PROJECTVALUES from "@salesforce/apex/TimesheetLWC.projectList";
+import PROJECTID from "@salesforce/apex/TimesheetLWC.projectID";
 import { loadStyle } from 'lightning/platformResourceLoader';
 import SAMPLE_CSS from '@salesforce/resourceUrl/Timesheet_CSS';
 
@@ -13,13 +14,14 @@ export default class Intellibee_Timesheet extends LightningElement {
 
   @wire(PROJECTVALUES)
   projectValuesList
-  
+
+
   isSaved =false
   showModal = false
   selectedproject= new Array()
   projectData=Array()
   projectlist=  new Array()  //['ECIC','PAF','TIMESHEET']
-  projectname='' // this.projectlist[0]
+  @api projectname='' // this.projectlist[0]
   userid =id
   userName
   total=0
@@ -33,19 +35,6 @@ export default class Intellibee_Timesheet extends LightningElement {
   
   }
   
-
-  createTimesheetRecord(){
-    var fields = {'Week_Start_Date__c' : this.submitWeekStart,
-    'Sunday__c' : this.dayValue[1], 'Monday__c' : this.dayValue[2], 'Tuesday__c' : this.dayValue[3], 
-    'Wednesday__c' : this.dayValue[4], 'Thursday__c' : this.dayValue[5], 'Friday__c' : this.dayValue[6], 
-    'Saturday__c' : this.dayValue[7]};
-    var objRecordInput = {'apiName' : 'Weekly_Timesheet__c', fields};
-    createRecord(objRecordInput).then(response => {
-      alert('Record created with Id: ' +response.id);
-  }).catch(error => {
-      alert('Error: ' +JSON.stringify(error));
-  });
-  }
 
   apexprojectinsertion()
   {
@@ -330,7 +319,7 @@ export default class Intellibee_Timesheet extends LightningElement {
           totalProjectHours += (isNaN(x[i].value) || x[i].value == "" ? 0 : parseInt(x[i].value));
         }
         this.template.querySelector(".addAll lightning-input[data-id=total]").value = parseInt(totalProjectHours);
-        console.log("line 312"+this.projectname);
+        console.log("line 337"+this.projectname);
 
         this.dayValue = new Array();
         this.dayValue.push(this.projectname);
@@ -339,7 +328,38 @@ export default class Intellibee_Timesheet extends LightningElement {
           this.dayValue.push(i);
         }        
         console.log(this.dayValue);
+
+        console.log("line 332 "+JSON.stringify(this.projectname));
         return this.dayValue;
+
+    }
+
+    //@api apexProjectName = JSON.stringify('create - Costo')
+
+    //@wire(PROJECTID, {projectNameLookup : 'create - Costo'})
+  //@wire(PROJECTID, {projectNameLookup : this.projectname})
+    //projectID2;
+    test=''
+
+    createTimesheetRecord(){
+      var projectID2 = PROJECTID({projectNameLookup : this.projectname})
+      .then(result => {
+        this.test = result;
+        console.log("recordID: "+result);
+        return this.test;
+      });
+      console.log("line 350 "+ this.test);
+      console.log(projectID2);
+      var fields = {'Week_Start_Date__c' : this.submitWeekStart,
+      'Sunday__c' : this.dayValue[1], 'Monday__c' : this.dayValue[2], 'Tuesday__c' : this.dayValue[3], 
+      'Wednesday__c' : this.dayValue[4], 'Thursday__c' : this.dayValue[5], 'Friday__c' : this.dayValue[6], 
+      'Saturday__c' : this.dayValue[7]};
+      var objRecordInput = {'apiName' : 'Weekly_Timesheet__c', fields};
+      createRecord(objRecordInput).then(response => {
+        alert('Record created with Id: ' +response.id);
+    }).catch(error => {
+        alert('Error: ' +JSON.stringify(error));
+    });
     }
 
 }
