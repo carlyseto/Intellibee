@@ -169,3 +169,16 @@ form lightning-card article div.slds-card__body slot div.slds-var-m-around_mediu
 .label-hidden > label {
     display: none;
 }
+
+tr.hideInput lightning-input{
+    visibility: hidden;
+}
+
+tr.hideInput > td:nth-child(10) > lightning-input {
+    visibility: visible;
+}
+
+tr.hideInput > th {
+    display: flex;
+    justify-content: center;
+}

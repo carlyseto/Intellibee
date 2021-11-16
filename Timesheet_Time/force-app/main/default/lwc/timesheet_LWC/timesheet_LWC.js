@@ -40,8 +40,6 @@ export default class Intellibee_Timesheet extends LightningElement {
   {
     this.isSaved= true;
     timesheetinsert({project:JSON.stringify(this.projectData)});
-
-    createTimesheetRecord();
   }
   
 
@@ -315,10 +313,10 @@ export default class Intellibee_Timesheet extends LightningElement {
         var totalProjectsList = x.length;
         console.log(totalProjectsList);
         var totalProjectHours = 0;
-        for(var i = 0; i < x.length; i++){
+        for(var i = 0; i < x.length - 1; i++){
           totalProjectHours += (isNaN(x[i].value) || x[i].value == "" ? 0 : parseInt(x[i].value));
         }
-        this.template.querySelector(".addAll lightning-input[data-id=total]").value = parseInt(totalProjectHours);
+        this.template.querySelector(".addAll lightning-input[data-id=in7]").value = parseInt(totalProjectHours);
         console.log("line 337"+this.projectname);
 
         this.dayValue = new Array();
