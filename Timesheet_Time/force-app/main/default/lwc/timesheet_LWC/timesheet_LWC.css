@@ -152,8 +152,7 @@ tr.addAll > td:nth-child(10) > lightning-input {
 
 form lightning-card article div.slds-card__body slot div.slds-var-m-around_medium table tbody tr:nth-child(5) th {
     display: flex;
-    padding-right: 0;
-    padding-left: 0;
+    justify-content: center;
 }
 
 lightning-input.slds-input.label-hidden.slds-form-element {
@@ -161,7 +160,7 @@ lightning-input.slds-input.label-hidden.slds-form-element {
 
 }
 
-form lightning-card article div.slds-card__body slot div.slds-var-m-around_medium table tbody tr:nth-child(6) th {
+form lightning-card article div.slds-card__body slot div.slds-var-m-around_medium table tbody tr:nth-child(4) th {
     display: flex;
     justify-content: center;
 }
